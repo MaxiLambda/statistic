@@ -1,17 +1,15 @@
 (ns statistic.core
   (:gen-class)
-  (:require [org.httpkit.server :as server]
+  (:require [clojure.data.json :as json]
             [compojure.core :refer :all]
             [compojure.route :as route]
-            [clojure.data.json :as json]
+            [org.httpkit.server :as server]
             [statistic.db.tables.players :as players]))
 
 (defn fps-handler [req]
-  {:status 200
+  {:status  200
    :headers {"Content-Type" "text/json"}
-   :body (json/write-str (players/get-players))})
-
-
+   :body    (json/write-str (players/get-players))})
 
 (defroutes app-routes
            (GET "/" [] fps-handler)
