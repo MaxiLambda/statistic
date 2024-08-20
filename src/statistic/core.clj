@@ -2,31 +2,21 @@
   (:gen-class)
   (:require [org.httpkit.server :as server]
             [compojure.core :refer :all]
-            [compojure.route :as route]))
+            [compojure.route :as route]
+            [clojure.data.json :as json]
+            [statistic.db.tables.players :as players]))
 
 (defn fps-handler [req]
   {:status 200
-   :headers {"Content-Type" "text/html"}
-   :body "Pew Pew!"})
-
-(defn mail-man []
-  "{\"Spongebob Narrator\": \"5 years later...\"}")
-
-(defn mail-handler [req]
-  {:status 200
    :headers {"Content-Type" "text/json"}
-   :body (mail-man)})
+   :body (json/write-str (players/get-players))})
 
-(defn general-handler [req]
-  {:status  200
-   :headers {"Content-Type" "text/html"}
-   :body    "All hail General Zod!"})
+
 
 (defroutes app-routes
            (GET "/" [] fps-handler)
-           (GET "/postoffice" [] mail-handler)
-           (ANY "/anything-goes" [] general-handler)
-           (route/not-found "You must be new here"))
+           (GET "/players" [] fps-handler)
+           (route/not-found "Error 404 - route not found"))
 
 (defn -main
   "This is the apps entry point"
