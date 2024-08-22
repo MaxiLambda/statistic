@@ -1,20 +1,13 @@
 (ns statistic.db.tables.players
   (:require [next.jdbc :as jdbc]
-            [next.jdbc.result-set :as result-set]
-            [statistic.db.connection :refer [db]]))
+            [statistic.db.connection :refer [db]]
+            [statistic.db.utils :refer [execute!]]))
 
-(defn execute!
-  "wrapper around jdbc/execute. removes table names before qualified maps"
-  ([params ops]
-   (jdbc/execute! db params (merge {:builder-fn result-set/as-unqualified-maps} ops)))
-  ([params]
-   (execute! params {})))
-
-(defn create-player [{name :name role :role}]
+(defn create-player [{name :name}]
   "create a new player"
-  (let [query (str "INSERT INTO players(name, role) VALUES('" name "','" role "')")]
+  (let [query (str "INSERT INTO players(name) VALUES('" name "')")]
     (jdbc/execute-one! db [query])))
 
-(defn get-players []
+(defn get-all []
   "get all players from the db"
   (execute! ["SELECT * FROM players"]))
