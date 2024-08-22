@@ -6,7 +6,7 @@
 (defn create-match [{datetime   :date
                      winner     :winner
                      discipline :discipline
-                     tag        :string}]
+                     tag        :tag}]
   "create a match"
   (let [query (str "INSERT INTO matches(datetime,winner,discipline,tag)
     VALUES('" datetime "','" winner "','" discipline "','" tag "')")]
