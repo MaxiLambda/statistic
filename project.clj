@@ -8,7 +8,12 @@
                  [compojure "1.7.1"]
                  [com.github.seancorfield/next.jdbc "1.3.834"]
                  [org.postgresql/postgresql "42.2.10"]
-                 [org.clojure/data.json "2.5.0"]]
+                 [org.clojure/data.json "2.5.0"]
+                 [ring/ring-core "1.12.2"]
+                 [ring-basic-authentication/ring-basic-authentication "1.2.0"]
+                 ]
   :main ^:skip-aot statistic.core
   :profiles {:uberjar {:aot :all}}
-  :repl-options {:init-ns statistic.core})
+  :repl-options {:init-ns statistic.core}
+  :ring {:handler statistic.rest.routes/app-routes}
+  :plugins [[lein-ring "0.12.6"]])

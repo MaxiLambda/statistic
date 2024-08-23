@@ -5,16 +5,20 @@
     <title>Index</title>
 </head>
 <body>
-    <form method="post" action="http://localhost:8080/login">
-        <label>
-            Username
-            <input name="username" type="text"/>
-        </label>
-        <label>
-            Password
-            <input name="password" type="password"/>
-        </label>
-        <input type="submit" value="login"/>
-    </form>
+<form action="/login" method="POST">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+    <br>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <br>
+    <div>
+        <button type="submit">Login</button>
+    </div>
+</form>
 </body>
 </html>
