@@ -1,4 +1,4 @@
-(ns statistic.db.view.match
+(ns statistic.db.service.match
   (:require [statistic.db.utils :refer [execute!]]))
 
 ;;TODO add optional para, to get teams for specific match

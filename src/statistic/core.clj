@@ -5,9 +5,7 @@
             [compojure.route :as route]
             [org.httpkit.server :as server]
             [statistic.db.tables.players :as players]
-            [next.jdbc.date-time :as date-time]
-            [next.jdbc.result-set :as result-set])
-  (:import (java.sql Array)))
+            [statistic.db.setup :as setup]))
 
 (defn fps-handler [req]
   {:status  200
@@ -31,11 +29,7 @@
   "This is the apps entry point"
   [& args]
   ;; move to setup function in separate namespace
-  (date-time/read-as-local)
-  (extend-protocol result-set/ReadableColumn
-    Array
-    (read-column-by-label [^Array v _]    (vec (.getArray v)))
-    (read-column-by-index [^Array v _ _]  (vec (.getArray v))))
+  (setup/db-setup)
   (let [port (Integer/parseInt (or (System/getenv "PORT") "8080"))]
     (server/run-server #'app-routes {:port port})
     (println (str "Running webserver at http:/127.0.0.1:" port "/"))))
