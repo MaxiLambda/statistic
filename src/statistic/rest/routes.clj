@@ -3,32 +3,35 @@
   (:require [clojure.data.json :as json]
             [compojure.core :refer :all]
             [compojure.route :as route]
+            [ring.middleware.basic-authentication :refer [wrap-basic-authentication]]
             [ring.util.response :as response]
+            [ring.middleware.params :as params]
             [statistic.db.tables.players :as players]
-            [ring.middleware.basic-authentication :refer [wrap-basic-authentication]]))
+            [statistic.authentication.admin-authentication :refer [authenticated?]]))
 
-;;TODO change
-(defn authenticated? [user password]
-  (and (= "admin" user)
-       (= "admin" password)))
 
-(defn fps-handler [req]
+
+(defn players-handler [req]
+  (println req)
   {:status  200
    :headers {"Content-Type" "text/json"}
    :body    (json/write-str (players/get-all))})
 
-(defn login-handler [req]
+(defn home-handler [req]
   (response/file-response "index.html" {:root "resources"}))
 
 (defroutes public-routes
-           (GET "/" [] login-handler)
-           (GET "/login" [] login-handler))
+           (GET "/players" [] players-handler)
+           (GET "/players/create" [] (response/response "handle new player"))
+           (GET "/" [] home-handler))
 
 (defroutes protected-routes
-           (GET "/players" [] fps-handler)
            (GET "/hidden" [] (response/response "moin")))
 
 (defroutes app-routes
            public-routes
-           (wrap-basic-authentication protected-routes authenticated? )
+           ;;TODO wrap protected routes in admin prefix
+           (-> protected-routes
+               params/wrap-params
+               (wrap-basic-authentication authenticated?))
            (route/not-found "Error 404 - route not found"))
