@@ -19,7 +19,7 @@
    :body    (json/write-str (players/get-all))})
 
 (defn home-handler [req]
-  (response/file-response "index.html" {:root "resources"}))
+  (response/file-response "public/index.html" {:root "resources"}))
 
 (defroutes public-routes
            (GET "/players" [] players-handler)
@@ -33,8 +33,8 @@
 (defroutes app-routes
            ;;resources should be available publicly
            ;;add all files from "./resources" to serve them
-           ;;this reserves the prefixes /index.html and /js/compiled
-           (resource/wrap-resource public-routes "")
+           ;;this reserves the prefixes public/index.html and public/js/compiled
+           (resource/wrap-resource public-routes "public")
            ;;TODO wrap protected routes in admin prefix
            (-> protected-routes
                params/wrap-params

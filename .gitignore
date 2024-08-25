@@ -14,5 +14,5 @@ pom.xml.asc
 /.idea/
 /statistic.iml
 /node_modules
-/resources/js/
+/resources/public/js/
 /.shadow-cljs
