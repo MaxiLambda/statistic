@@ -11,3 +11,8 @@
 (defn get-all []
   "get all players from the db"
   (execute! ["SELECT * FROM players"]))
+
+(defn update-player [{id :id new-name :new-name}]
+  "change a players name"
+  (let [query (str "UPDATE players SET name = '" new-name "'  WHERE id = " id)]
+    (execute! [query])))

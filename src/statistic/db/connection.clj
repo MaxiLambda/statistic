@@ -1,6 +1,7 @@
 (ns statistic.db.connection
   (:require [next.jdbc :as jdbc]))
 
+;;TODO make :user, :password configurable
 (def db-config
   {:dbtype                "postgresql"
    :dbname                "statistic_db"

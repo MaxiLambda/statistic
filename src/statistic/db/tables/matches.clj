@@ -14,3 +14,6 @@
 
 (defn get-all []
   (execute! ["SELECT * FROM matches"]))
+
+(defn get-by-id [id]
+  (execute! [(str "SELECT * FROM matches WHERE matches.id = " id)]))
