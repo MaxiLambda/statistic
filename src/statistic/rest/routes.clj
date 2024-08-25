@@ -6,6 +6,7 @@
             [ring.middleware.basic-authentication :refer [wrap-basic-authentication]]
             [ring.util.response :as response]
             [ring.middleware.params :as params]
+            [ring.middleware.resource :as resource]
             [statistic.db.tables.players :as players]
             [statistic.authentication.admin-authentication :refer [authenticated?]]))
 
@@ -28,8 +29,12 @@
 (defroutes protected-routes
            (GET "/hidden" [] (response/response "moin")))
 
+
 (defroutes app-routes
-           public-routes
+           ;;resources should be available publicly
+           ;;add all files from "./resources" to serve them
+           ;;this reserves the prefixes /index.html and /js/compiled
+           (resource/wrap-resource public-routes "")
            ;;TODO wrap protected routes in admin prefix
            (-> protected-routes
                params/wrap-params
