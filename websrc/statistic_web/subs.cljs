@@ -8,3 +8,8 @@
  ::name
  (fn [db]
    (:name db)))
+
+(re-frame/reg-sub
+  ::table
+  (fn [db]
+    (:table db)))

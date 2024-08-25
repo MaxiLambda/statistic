@@ -17,7 +17,7 @@
                  [reagent "1.2.0"]
                  [re-frame "1.4.3"]
                  [binaryage/devtools "1.0.6"]
-                 [re-com "2.21.21"]]
+                 [arttuka/reagent-material-ui "5.11.12-0"]]
   :source-paths ["src", "websrc"]
   :main ^:skip-aot statistic.core
   :profiles {:uberjar {:aot :all}}
