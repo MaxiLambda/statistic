@@ -30,19 +30,14 @@
 (defroutes protected-routes
            (GET "/hidden" [] (response/response "moin")))
 
-(defroutes protected
-           (wrap-basic-authentication protected-routes authenticated?))
-
-
 (defroutes all-routes
            ;;resources should be available publicly
            ;;add all files from "./resources" to serve them
            ;;this reserves the prefixes public/index.html and public/js/compiled
+           ;;adds everything in the resources/public dir to the path with the prefix public
            (resource/wrap-resource public-routes "public")
-           ;;TODO wrap protected routes in admin prefix
-           (ANY "/admin/" [] protected)
-           (route/not-found "Error 404 - route not found")
-           )
+           (context "/admin" [] (wrap-basic-authentication protected-routes authenticated?))
+           (route/not-found "Error 404 - route not found"))
 
 (def app-routes
   (-> all-routes

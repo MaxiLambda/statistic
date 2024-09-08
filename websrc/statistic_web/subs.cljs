@@ -5,9 +5,9 @@
 ;;Data Extraction form global State - STEP 4
 
 (re-frame/reg-sub
- ::routing
+ ::view
  (fn [db]
-   (:routing db)))
+   (:view db)))
 
 (re-frame/reg-sub
   ::name

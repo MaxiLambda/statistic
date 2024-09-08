@@ -6,17 +6,20 @@
 
 ;;create views - STEP 5
 
-(def views {:home (let [name (re-frame/subscribe [::subs/name])]
-                    [:div
-                     [:h1
-                      "Hello from " @name "!?"]
-                     [button
-                      {:variant "contained"
-                       :color   "primary"}
-                      "Click me"
-                      ]
-                     ])})
+(defn home [] (let [name (re-frame/subscribe [::subs/name])]
+                [:div
+                 [:h1
+                  "Hello from " @name "!?"]
+                 [button
+                  {:variant "contained"
+                   :color   "primary"}
+                  "Click me"
+                  ]
+                 ]))
+
+(defn views [key]
+  (key {:home (home)}))
 
 (defn main-panel []
-  (let [routing (re-frame/subscribe [::subs/routing])]
-    ((:path @routing) views)))
+  (let [view (re-frame/subscribe [::subs/view])]
+    (views @view)))
