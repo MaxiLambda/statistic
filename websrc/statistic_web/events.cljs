@@ -8,11 +8,11 @@
 ;;define Handler for Global initialization
 (re-frame/reg-event-db
   ::initialize-db
-  (fn [_ _]
+  (fn [_db _event]
     db/default-db))
 
-;;handles path or parameter
+;;handles view change
 (re-frame/reg-event-db
   ::path-param-change
-  (fn [db event])
-  )
+  (fn [db [_event-key new-view]]
+    (assoc db :view new-view)))
