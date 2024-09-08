@@ -11,6 +11,7 @@
   (fn [_db _event]
     db/default-db))
 
+;;TODO when views come with parameters, do a cleanup of old parameters on change
 ;;handles view change
 (re-frame/reg-event-db
   ::path-param-change
