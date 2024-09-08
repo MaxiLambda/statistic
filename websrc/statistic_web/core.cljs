@@ -3,8 +3,8 @@
    [reagent.dom :as rdom]
    [re-frame.core :as re-frame]
    [statistic-web.events :as events]
-   [statistic-web.views :as views]))
-
+   [statistic-web.views :as views]
+   ))
 
 (defn ^:dev/after-load mount-root []
   (re-frame/clear-subscription-cache!)
