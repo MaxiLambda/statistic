@@ -13,12 +13,6 @@
                  {:sx {:pl 2
                        :pr 2
                        :pt 2}}
-                 [button
-                  {:variant  "contained"
-                   :color    "primary"
-                   :on-click #(re-frame/dispatch [::events/path-change {:name :other}])}
-                  "TODO move Navigation to leaderboard"
-                  ]
                  [:h1 "Leader Board (overall wins, add filter by tag)"]
                  (for [player sorted-players]
                    [:p

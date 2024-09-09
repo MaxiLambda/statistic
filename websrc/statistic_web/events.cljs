@@ -25,16 +25,21 @@
      ;;dispatch load view event for initial view
      :dispatch [(load-view-event-key (:view db/default-db))]}))
 
-
 ;;handles view change
+;;supports change by "<:view>" and "{:name <:view> :params {...}}"
+(defmulti path-change (fn [_ [_ param]] (keyword? param)))
+(defmethod path-change true [cofx [event-key new-view]]
+  (path-change cofx [event-key {:name new-view}]))
+(defmethod path-change false [{:keys [db]} [_event-key new-view]]
+  {:db       (assoc db :view
+                       ;;add empty params to new view, if no value for params is set in new-view
+                       (merge {:params {}} new-view))
+   :dispatch [(load-view-event-key new-view)]})
+
+
 (re-frame/reg-event-fx
   ::path-change
-  (fn [{:keys [db]} [_event-key new-view]]
-    {:db       (assoc db :view
-                         ;;add empty params to new view, if no value for params is set in new-view
-                         (merge {:params {}} new-view))
-     :dispatch [(load-view-event-key new-view)]
-     }))
+  path-change)
 
 ;;handles view param change
 (re-frame/reg-event-db

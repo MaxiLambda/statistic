@@ -18,14 +18,25 @@
        {:component "div"
         :variant   "h6"
         :sx        {:flex-grow 1}}
-       ;;TODO real header message
-       "Hello-Header"
+       "Statistics"
+       ]
+      [button
+       {:variant  "contained"
+        :color    "secondary"
+        :on-click #(re-frame/dispatch [::events/path-change :other])}
+       "Placeholder Page"
+       ]
+      [button
+       {:variant  "contained"
+        :color    "secondary"
+        :on-click #(re-frame/dispatch [::events/path-change {:name :home}])}
+       "Leader Board"
        ]
       [button
        {:variant  "contained"
         :color    "primary"
         ;;TODO create event to gain admin access and redirect to view
-        :on-click #(re-frame/dispatch [::events/path-change :other])}
+        }
        "Edit (Admin)"
        ]
       ]
