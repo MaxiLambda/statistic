@@ -16,4 +16,6 @@
 (re-frame/reg-event-db
   ::path-param-change
   (fn [db [_event-key new-view]]
-    (assoc db :view new-view)))
+    (assoc db :view
+              ;;add empty params to new view, if no value for params is set in new-view
+              (merge {:params {}} new-view))))

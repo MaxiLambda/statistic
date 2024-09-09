@@ -12,6 +12,7 @@
     (rdom/unmount-component-at-node root-el)
     (rdom/render [views/app-panel] root-el)))
 
+;;web-app entrypoint
 (defn init []
   (re-frame/dispatch-sync [::events/initialize-db])
   (mount-root))

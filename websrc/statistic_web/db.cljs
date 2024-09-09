@@ -3,4 +3,5 @@
 ;;The initial global state
 (def default-db
   {:name "re-frame"
-   :view :home})
+   :view {:name   :home
+          :params {}}})
