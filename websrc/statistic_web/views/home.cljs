@@ -6,16 +6,22 @@
             [statistic-web.subs :as subs]))
 
 ;;this needs to be a function for re-frame/subscribe
-(defn home [] (let [name (re-frame/subscribe [::subs/name])]
+(defn home [] (let [player-wins @(re-frame/subscribe [::subs/wins])
+                    ;;sort players descending (wins) by swapping sign
+                    sorted-players (sort-by #(-> % :count -) player-wins)]
                 [box
                  {:sx {:pl 2
-                       :pr 2}}
-                 [:h1
-                  "Hello from " @name "!"]
+                       :pr 2
+                       :pt 2}}
                  [button
                   {:variant  "contained"
                    :color    "primary"
                    :on-click #(re-frame/dispatch [::events/path-change {:name :other}])}
-                  "Click me"
+                  "TODO move Navigation to leaderboard"
                   ]
+                 [:h1 "Leader Board (overall wins, add filter by tag)"]
+                 (for [player sorted-players]
+                   [:p
+                    {:key (:id player)}
+                    (str (:name player) ":") (:count player)])
                  ]))

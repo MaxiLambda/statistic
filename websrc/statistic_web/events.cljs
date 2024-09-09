@@ -5,6 +5,8 @@
     [re-frame.core :as re-frame]                            ;;necessary of effects in reg-event-fx
     [statistic-web.db :as db]))
 
+;;todo consider splitting in view specific events
+
 (defn load-view-event-key [view]
   "gets the :view map from the db and dispatches a ::<:name view>-load event"
   (-> view
@@ -60,4 +62,5 @@
 (re-frame/reg-event-fx
   ::wins-fetched
   (fn [_cofx [_event-key view body]]
+    ;;dispatch event to add the wins under the :wins key to the :params map
     {:dispatch [::param-change view {:wins body}]}))
