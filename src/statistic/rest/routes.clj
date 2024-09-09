@@ -8,21 +8,28 @@
             [ring.util.response :as response]
             [compojure.route :as route]
             [statistic.authentication.admin-authentication :refer [authenticated?]]
-            [statistic.db.tables.players :as players]))
+            [statistic.db.tables.players :as players]
+            [statistic.db.service.match :as match]))
 
 
-
-(defn players-handler [req]
-  (println req)
+;;TODO split in controllers
+(defn players-handler [_req]
   {:status  200
    :headers {"Content-Type" "text/json"}
    :body    (json/write-str (players/get-all))})
 
-(defn home-handler [req]
+(defn wins-handler [_req]
+  {:status  200
+   :headers {"Content-Type" "text/json"}
+   :body    (json/write-str (match/get-number-wins))})
+
+(defn home-handler [_req]
   (response/file-response "public/index.html" {:root "resources"}))
 
 (defroutes public-routes
            (GET "/players" [] players-handler)
+           (GET "/wins" [] wins-handler)
+           ;;TODO should  be POST
            (GET "/players/create" [] (response/response "handle new player"))
            (GET "/" [] home-handler)
            )

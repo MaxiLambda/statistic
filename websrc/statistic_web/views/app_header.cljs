@@ -25,7 +25,7 @@
        {:variant  "contained"
         :color    "primary"
         ;;TODO create event to gain admin access and redirect to view
-        :on-click #(re-frame/dispatch [::events/path-param-change :other])}
+        :on-click #(re-frame/dispatch [::events/path-change :other])}
        "Edit (Admin)"
        ]
       ]

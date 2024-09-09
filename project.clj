@@ -13,9 +13,10 @@
                  [ring-basic-authentication/ring-basic-authentication "1.2.0"]
                  ;;cljs dependencies
                  [thheller/shadow-cljs "2.28.12"]
-                 ;;if things break, maybe go back to version 1.1.1
+                 [cljs-ajax "0.8.4"]
                  [reagent "1.2.0"]
                  [re-frame "1.4.3"]
+                 [day8.re-frame/http-fx "0.2.4"]
                  [binaryage/devtools "1.0.6"]
                  [arttuka/reagent-material-ui "5.11.12-0"]]
   :source-paths ["src", "websrc"]

@@ -8,15 +8,15 @@
 ;;create views - STEP 5
 
 ;;TODO make prettier
-(def loading-view [:p "Loading"])
+(def error-view [:p "An error occurred"])
 
 
 (def placeholder-view [:p "Placeholder"])
 
 (defn views [view-key]
-  (view-key {:home  (home)
-             :other placeholder-view
-             :loading loading-view}))
+  (view-key {:home    (home)
+             :other   placeholder-view
+             :failure error-view}))
 
 (defn app-panel []
   (-> @(re-frame/subscribe [::subs/view])

@@ -15,7 +15,7 @@
                  [button
                   {:variant  "contained"
                    :color    "primary"
-                   :on-click #(re-frame/dispatch [::events/path-param-change {:name :other}])}
+                   :on-click #(re-frame/dispatch [::events/path-change {:name :other}])}
                   "Click me"
                   ]
                  ]))
