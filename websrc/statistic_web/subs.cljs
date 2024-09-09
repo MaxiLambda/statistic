@@ -10,11 +10,6 @@
    (:view db)))
 
 (re-frame/reg-sub
-  ::name
-  (fn [db]
-    (:name db)))
-
-(re-frame/reg-sub
   ::wins
   (fn [db]
     (-> db :view :params :wins)))

@@ -22,6 +22,7 @@
   ::initialize-db
   (fn [_cofx _event]
     {:db       db/default-db
+     ;;dispatch load view event for initial view
      :dispatch [(load-view-event-key (:view db/default-db))]}))
 
 
@@ -39,23 +40,24 @@
 (re-frame/reg-event-db
   ::param-change
   (fn [db [_event-key view-name params-map]]
-    (if (= (-> db :view :name) view-name)
-      ;;update the params by updating via merging the new params
-      (doto (update-in db [:view :params] merge params-map) println)
-      ;;params for wrong view changed
-      (do
-        (println "Params changed for view" view-name "but current view is" (-> db :view :name))
-        db))))
+    (let [current-view (-> db :view :name)]
+      (if (= current-view view-name)
+        ;;update the params by updating via merging the new params
+        (update-in db [:view :params] merge params-map)
+        ;;params changed but change was requested from/for different view
+        ;;therefore don't change db
+        (do
+          (println "Params changed for view" view-name "but current view is" current-view)
+          db)))))
 
 (re-frame/reg-event-fx
   :home-load
   (fn [_cofx _event]
     {:http-xhrio {:method          :get
                   :uri             "/wins"
-                  :timeout         5000
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
-                  :on-failure      [::path-change :failure]
+                  :on-failure      [::path-change {:name :failure}]
                   :on-success      [::wins-fetched :home]
                   }}))
 
