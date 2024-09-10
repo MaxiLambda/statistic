@@ -9,3 +9,10 @@
    (jdbc/execute! db params (merge {:builder-fn result-set/as-unqualified-maps} ops)))
   ([params]
    (execute! params {})))
+
+(defn execute-one!
+  "wrapper around jdbc/execute-one!. removes table names before qualified maps"
+  ([params ops]
+   (jdbc/execute-one! db params (merge {:builder-fn result-set/as-unqualified-maps} ops)))
+  ([params]
+   (execute! params {})))

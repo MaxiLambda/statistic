@@ -1,5 +1,6 @@
 (ns statistic.db.service.match
   (:require [statistic.db.tables.matches :as matches]
+            [statistic.db.tables.player-matches :as player-matches]
             [statistic.db.utils :refer [execute!]]))
 
 (defn get-teams
@@ -22,19 +23,24 @@
                      team-clause
                      "GROUP BY matches.id, player_matches.team")]))))
 
-(defn get-match-with-teams [{match :match match-id :match-id}]
+(defn get-match-with-teams [{match-in :match match-id :match-id}]
   "enrich a match with its teams.
   You need to either supply :match or :match-id.
 
   If match is supplied, it is enriched with the teams, otherwise match is fetched from the db by using :match-id"
-  (let [match (or match (some-> match-id matches/get-by-id))
-        team (get-teams {:match-id match-id})
+  (let [match (doto (or match-in (some-> match-id matches/get-by-id)) println)
+        team (doto (get-teams {:match-id (:id match)}) println)
         team1 (first (filter #(-> % :team #{1}) team))
         team2 (first (filter #(-> % :team #{2}) team))]
     (-> match
-        first
         (assoc :team1 {:names (:members team1) :ids (:member_ids team1)}
                :team2 {:names (:members team2) :ids (:member_ids team2)}))))
+
+(defn get-all-matches-with-teams []
+  "returns all matches with resolved teams.
+  First fetches all matches, then enriches them with the teams"
+  (for [match (matches/get-all)]
+    (get-match-with-teams {:match match})))
 
 (defn get-number-wins
   "returns the number of wins for each player as:
@@ -58,3 +64,13 @@
                      "AND player_matches.match_id = matches.id "
                      "AND player_matches.player_id = players.id "
                      "GROUP BY players.name, players.id")]))))
+
+(defn create-new-match [{players :players :as match-params}]
+  "creates a new match in the db. Can't handle new players.
+  :players should be a list of all players with the form [{:id :team}].
+
+  First a new match is created in the matches table, then the players are added to their
+  corresponding teams in the player_matches table."
+  (let [new-match-id (:id (matches/create-match match-params))]
+    (for [{player :id team :team} players]
+      (player-matches/create-player-match {:match_id new-match-id :player_id player :team team}))))
