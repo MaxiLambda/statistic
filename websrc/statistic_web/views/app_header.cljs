@@ -23,20 +23,13 @@
       [button
        {:variant  "contained"
         :color    "secondary"
-        :on-click #(re-frame/dispatch [::events/path-change :other])}
-       "Placeholder Page"
-       ]
-      [button
-       {:variant  "contained"
-        :color    "secondary"
-        :on-click #(re-frame/dispatch [::events/path-change {:name :home}])}
+        :on-click #(re-frame/dispatch [::events/path-change :home])}
        "Leader Board"
        ]
       [button
        {:variant  "contained"
         :color    "primary"
-        ;;TODO create event to gain admin access and redirect to view
-        }
+        :on-click #(re-frame/dispatch [::events/path-change :management])}
        "Edit (Admin)"
        ]
       ]
