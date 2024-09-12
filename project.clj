@@ -10,6 +10,7 @@
                  [org.postgresql/postgresql "42.2.10"]
                  [org.clojure/data.json "2.5.0"]
                  [ring/ring-core "1.12.2"]
+                 [ring/ring-json "0.5.1"]
                  [ring-basic-authentication/ring-basic-authentication "1.2.0"]
                  ;;cljs dependencies
                  [thheller/shadow-cljs "2.28.12"]
