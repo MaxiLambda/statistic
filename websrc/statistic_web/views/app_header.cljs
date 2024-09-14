@@ -24,7 +24,7 @@
        {:variant  "contained"
         :color    "secondary"
         :on-click #(re-frame/dispatch [::events/path-change :leaderboard])}
-       "Leader Board"
+       "Leaderboard"
        ]
       [button
        {:variant  "contained"

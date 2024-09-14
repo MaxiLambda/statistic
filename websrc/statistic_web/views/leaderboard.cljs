@@ -1,10 +1,10 @@
-(ns statistic-web.views.home
+(ns statistic-web.views.leaderboard
   (:require [re-frame.core :as re-frame]
             [reagent-mui.material.box :refer [box]]
-            [statistic-web.subs :as subs]))
+            [statistic-web.subs.leaderboard-subs :as subs]))
 
 ;;this needs to be a function for re-frame/subscribe
-(defn home [] (let [player-wins @(re-frame/subscribe [::subs/wins])
+(defn leaderboard [] (let [player-wins @(re-frame/subscribe [::subs/wins])
                     ;;sort players descending (wins) by swapping sign
                     sorted-players (sort-by #(-> % :count -) player-wins)]
                 [box

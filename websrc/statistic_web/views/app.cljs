@@ -1,9 +1,9 @@
 (ns statistic-web.views.app
   (:require
     [re-frame.core :as re-frame]
-    [statistic-web.subs :as subs]
+    [statistic-web.subs.global-subs :as subs]
     [statistic-web.views.app-header :refer [header]]
-    [statistic-web.views.home :refer [home]]
+    [statistic-web.views.leaderboard :refer [leaderboard]]
     [statistic-web.views.management :refer [management-view]]))
 
 ;;create views - STEP 5
@@ -12,7 +12,7 @@
 (def error-view [:p "An error occurred"])
 
 (defn views [view-key]
-  (view-key {:leaderboard    (home)
+  (view-key {:leaderboard    (leaderboard)
              :management (management-view)
              :failure error-view}))
 
