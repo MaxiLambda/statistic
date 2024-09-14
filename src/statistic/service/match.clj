@@ -71,15 +71,18 @@
   "creates a new match in the db. Can't handle new players.
   :players should be a list of all players with the form [{:id :team}].
 
-  match params also consists of:
+  :match-params consists of:
   {datetime   :date
    winner     :winner
    discipline :discipline
-   tag        :tag}
+   tag        :tag
+   players    :players}
 
   First a new match is created in the matches table, then the players are added to their
   corresponding teams in the player_matches table."
   [{players :players :as match-params}]
   (let [new-match-id (:id (matches/create-match match-params))]
-    (for [{player :id team :team} players]
-      (player-matches/create-player-match {:match_id new-match-id :player_id player :team team}))))
+    (do
+      (for [{player :id team :team} players]
+        (player-matches/create-player-match {:match_id new-match-id :player_id player :team team}))
+      new-match-id)))

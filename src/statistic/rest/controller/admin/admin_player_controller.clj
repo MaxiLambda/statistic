@@ -1,20 +1,21 @@
 (ns statistic.rest.controller.admin.admin-player-controller
   (:require [clojure.data.json :as json]
-            [compojure.core :refer [defroutes POST]]
+            [compojure.core :refer [POST defroutes]]
             [statistic.db.tables.players :as players])
   (:import (org.postgresql.util PSQLException)))
 
-;;requires :body {:name <name>}
-(defn create-player-handler [req]
+(defn create-player-handler
+  "requires :body {:name <name>}"
+  [req]
   (let [player-name (get-in [:body :name] req)]
     (if (nil? player-name)
       (do
         (println "Parameter :name is missing from body")
-        {:status 400})                                         ;;parameter is missing
+        {:status 400})                                      ;;parameter is missing
       (try
-        (json/write-str (players/create-player {:name player-name}))
         {:status  200
-         :headers {"Content-Type" "text/json"}}
+         :headers {"Content-Type" "text/json"}
+         :body    (json/write-str (players/create-player {:name player-name}))}
         (catch PSQLException e
           (-> e .getMessage println)
           (.printStackTrace e)
