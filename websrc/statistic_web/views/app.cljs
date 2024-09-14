@@ -12,7 +12,7 @@
 (def error-view [:p "An error occurred"])
 
 (defn views [view-key]
-  (view-key {:home    (home)
+  (view-key {:leaderboard    (home)
              :management (management-view)
              :failure error-view}))
 

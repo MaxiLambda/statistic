@@ -1,12 +1,10 @@
-(ns statistic-web.events
+(ns statistic-web.events.global-events
   (:require
-    [ajax.core :as ajax]
     [day8.re-frame.http-fx]
     [re-frame.core :as re-frame]                            ;;necessary of effects in reg-event-fx
     [statistic-web.db :as db]))
 
-;;todo consider splitting in view specific events
-
+;;used to automatically dispatch an event to load all data for a specific view
 (defn load-view-event-key [view]
   "gets the :view map from the db and dispatches a ::<:name view>-load event"
   (-> view
@@ -14,8 +12,6 @@
       name
       (str "-load")
       keyword))
-
-;; Event Handling - STEP 2
 
 ;;define Handler for Global initialization
 (re-frame/reg-event-fx
@@ -36,7 +32,7 @@
                        (merge {:params {}} new-view))
    :dispatch [(load-view-event-key new-view)]})
 
-
+;;handler for view change
 (re-frame/reg-event-fx
   ::path-change
   path-change)
@@ -54,20 +50,3 @@
         (do
           (println "Params changed for view" view-name "but current view is" current-view)
           db)))))
-
-(re-frame/reg-event-fx
-  :home-load
-  (fn [_cofx _event]
-    {:http-xhrio {:method          :get
-                  :uri             "/wins"
-                  :format          (ajax/json-request-format)
-                  :response-format (ajax/json-response-format {:keywords? true})
-                  :on-failure      [::path-change {:name :failure}]
-                  :on-success      [::wins-fetched :home]
-                  }}))
-
-(re-frame/reg-event-fx
-  ::wins-fetched
-  (fn [_cofx [_event-key view body]]
-    ;;dispatch event to add the wins under the :wins key to the :params map
-    {:dispatch [::param-change view {:wins body}]}))

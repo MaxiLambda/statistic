@@ -2,8 +2,11 @@
   (:require
    [reagent.dom :as rdom]
    [re-frame.core :as re-frame]
-   [statistic-web.events :as events]
    [statistic-web.views.app :as views]
+   [statistic-web.events.global-events :as events]
+    ;;IMPORTANT: require all ns where events are defined
+   [statistic-web.events.leaderboard-events]
+   [statistic-web.events.management-events]
    ))
 
 (defn ^:dev/after-load mount-root []

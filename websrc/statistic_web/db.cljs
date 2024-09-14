@@ -2,5 +2,5 @@
 
 ;;The initial global state
 (def default-db
-  {:view {:name   :home
+  {:view {:name   :leaderboard
           :params {}}})

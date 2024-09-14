@@ -10,7 +10,7 @@
  (fn [db]
    (:view db)))
 
-;;subscription handler for wins, only setup by :home at the moment
+;;subscription handler for wins, only setup by :leaderboard at the moment
 (re-frame/reg-sub
   ::wins
   (fn [db]

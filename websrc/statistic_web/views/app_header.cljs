@@ -5,7 +5,7 @@
             [reagent-mui.material.button :refer [button]]
             [reagent-mui.material.toolbar :refer [toolbar]]
             [reagent-mui.material.typography :refer [typography]]
-            [statistic-web.events :as events]))
+            [statistic-web.events.global-events :as events]))
 
 (defn header [children]
   [:div
@@ -23,7 +23,7 @@
       [button
        {:variant  "contained"
         :color    "secondary"
-        :on-click #(re-frame/dispatch [::events/path-change :home])}
+        :on-click #(re-frame/dispatch [::events/path-change :leaderboard])}
        "Leader Board"
        ]
       [button
