@@ -3,8 +3,9 @@
             [next.jdbc.result-set :as result-set])
   (:import (java.sql Array)))
 
-(defn db-setup []
+(defn db-setup
   "postgresql specific setup"
+  []
   ;;time objects from the db are resolved with the current locale
   (date-time/read-as-local)
   ;;sql arrays are returned as clojure arrays and vice versa
