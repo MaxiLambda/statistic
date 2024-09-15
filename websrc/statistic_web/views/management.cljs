@@ -1,11 +1,22 @@
-(ns statistic-web.views.management)
+(ns statistic-web.views.management
+  (:require [re-frame.core :as re-frame]
+            [reagent-mui.material.text-field :refer [text-field]]
+            [statistic-web.subs.management-subs :as subs]))
 
 (defn management-view []
-  [:p "TODO create form to add new matches"])
+  (let [players @(re-frame/subscribe [::subs/players])]
+    [text-field {:default-value "hallo"}]))
 
+
+;;to create a new player
+;;name -> char(20)
+
+
+
+;;to create a new match
 ;;date
 ;;winner 0,1,2
 ;;discipline char(20)
 ;;tag char(20)
-;;team1
-;;team2
+;;team1 -> [id]
+;;team2 -> [id]

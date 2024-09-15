@@ -8,7 +8,5 @@
    :headers {"Content-Type" "text/json"}
    :body    (json/write-str (players/get-all))})
 
-
-
 (defroutes routes
            (GET "/players" [] players-handler))
