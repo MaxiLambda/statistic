@@ -1,5 +1,6 @@
 (ns statistic-web.views.management-view
   (:require [re-frame.core :as re-frame]
+            [reagent.core :as r]
             [reagent-mui.material.form-control :refer [form-control]]
             [reagent-mui.material.text-field :refer [text-field]]
             ["@mui/x-date-pickers/timeViewRenderers" :refer [renderTimeViewClock]]
@@ -7,19 +8,21 @@
             [reagent-mui.x.date-time-picker :refer [date-time-picker]]
             [statistic-web.subs.management-subs :as subs]))
 
+(def match-date (r/atom (.now DateTime)))
 
 (defn management-view []
   (let [players @(re-frame/subscribe [::subs/players])]
     [form-control
      [:h3 "Create a new Match"]
-
-     [date-time-picker {:label          "pick some date-time"
+     [date-time-picker {:label          "Date and Time of the Match"
                         :format         "dd/MM/yyyy - HH:mm"
                         :ampm           false
-                        :default-value  (.now DateTime)
+                        :value          @match-date
+                        :on-change      #(reset! match-date %)
                         :view-renderers {:hours   renderTimeViewClock
                                          :minutes renderTimeViewClock}
                         }]
+     []
      [text-field {:variant       "standard"
                   :label         "hello"
                   :default-value "hallo"}]]))
