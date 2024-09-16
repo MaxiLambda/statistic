@@ -2,14 +2,15 @@
   (:require
     [re-frame.core :as re-frame]
     [statistic-web.subs.global-subs :as subs]
-    [statistic-web.views.app-container :refer [app-container]]
-    [statistic-web.views.app-header :refer [header]]
+    [statistic-web.views.wrapper.app-container :refer [app-container]]
+    [statistic-web.views.wrapper.app-header :refer [header]]
     [statistic-web.views.leaderboard-view :refer [leaderboard-view]]
-    [statistic-web.views.management-view :refer [management-view]]))
+    [statistic-web.views.management-view :refer [management-view]]
+    [statistic-web.views.wrapper.app-localization :refer [app-localization]]))
 
 ;;create views - STEP 5
 
-;;TODO make prettier
+;;TODO make prettier; move to separate file
 (def error-view [:p "An error occurred"])
 
 (defn views [view-key]
@@ -22,4 +23,5 @@
       :name                                                 ;;get the view as a key
       views                                                 ;;resolve to the correct view
       app-container                                         ;;container for default body
-      header))                                              ;;apply header to selected view
+      header
+      app-localization))                                    ;;apply header to selected view

@@ -1,4 +1,4 @@
-(ns statistic-web.views.app-header
+(ns statistic-web.views.wrapper.app-header
   (:require [re-frame.core :as re-frame]
             [reagent-mui.material.app-bar :refer [app-bar]]
             [reagent-mui.material.box :refer [box]]
