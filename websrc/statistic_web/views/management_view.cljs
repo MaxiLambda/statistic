@@ -1,12 +1,15 @@
 (ns statistic-web.views.management-view
   (:require [re-frame.core :as re-frame]
-            [reagent.core :as r]
             [reagent-mui.material.form-control :refer [form-control]]
             [reagent-mui.material.text-field :refer [text-field]]
-            ["@mui/x-date-pickers/timeViewRenderers" :refer [renderTimeViewClock]]
-            ["luxon" :refer [DateTime]]
             [reagent-mui.x.date-time-picker :refer [date-time-picker]]
-            [statistic-web.subs.management-subs :as subs]))
+            [reagent-mui.material.select :refer [select]]
+            [reagent-mui.material.menu-item :refer [menu-item]]
+            [reagent-mui.material.input-label :refer [input-label]]
+            [reagent.core :as r]
+            [statistic-web.subs.management-subs :as subs]
+            ["@mui/x-date-pickers/timeViewRenderers" :refer [renderTimeViewClock]]
+            ["luxon" :refer [DateTime]]))
 
 (def match-date (r/atom (.now DateTime)))
 
@@ -22,10 +25,24 @@
                         :view-renderers {:hours   renderTimeViewClock
                                          :minutes renderTimeViewClock}
                         }]
-     []
+     [:br]
+     [form-control
+      [input-label {:id "winner-label"
+                    :sx {:bgcolor "background.default"}}
+       "Who won?"
+       ]
+      [select {:labelId "winner-label"
+               :default-value 0
+               :variant "outlined"}
+       [menu-item {:value 0} "Draw"]
+       [menu-item {:value 1} "Team 1"]
+       [menu-item {:value 2} "Team 2"]
+       ]]
+     [:br]
      [text-field {:variant       "standard"
                   :label         "hello"
-                  :default-value "hallo"}]]))
+                  :default-value "hallo"}]
+     ]))
 
 
 ;;to create a new player
