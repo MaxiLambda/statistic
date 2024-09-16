@@ -86,3 +86,11 @@
       (for [{player :id team :team} players]
         (player-matches/create-player-match {:match_id new-match-id :player_id player :team team}))
       new-match-id)))
+
+(defn get-used-disciplines
+  "get all already used disciplines" []
+  (map :discipline (matches/get-used-disciplines)))
+
+(defn get-used-tags
+  "get all already used tags" []
+  (map :tag (matches/get-used-tags)))

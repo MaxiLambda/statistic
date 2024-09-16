@@ -12,6 +12,7 @@
             [statistic.authentication.basic-auth :refer [wrap-add-basic-prefix]]
             [statistic.rest.controller.admin.admin-player-controller :as admin-player-controller]
             [statistic.rest.controller.open.wins-controller :as wins-controller]
+            [statistic.rest.controller.open.match-data-controller :as match-data-controller]
             [statistic.rest.controller.open.player-controller :as player-controller]))
 
 (defn home-handler [_req]
@@ -20,6 +21,7 @@
 (defroutes public-routes
            player-controller/routes
            wins-controller/routes
+           match-data-controller/routes
            (GET "/" [] home-handler))
 
 (defroutes protected-routes

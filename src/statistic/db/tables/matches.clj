@@ -14,5 +14,11 @@
 (defn get-all []
   (execute! ["SELECT * FROM matches"]))
 
+(defn get-used-tags []
+  (execute! ["SELECT DISTINCT tag FROM matches"]))
+
+(defn get-used-disciplines []
+  (execute! ["SELECT DISTINCT discipline FROM matches"]))
+
 (defn get-by-id [id]
   (first (execute-one! [(str "SELECT * FROM matches WHERE matches.id = " id)])))

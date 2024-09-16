@@ -14,7 +14,11 @@
 (def match-date (r/atom (.now DateTime)))
 
 (defn management-view []
-  (let [players @(re-frame/subscribe [::subs/players])]
+  (let [players @(re-frame/subscribe [::subs/players])
+        tags @(re-frame/subscribe [::subs/tags])
+        disciplines @(re-frame/subscribe [::subs/disciplines])]
+    (println (str tags))
+    (println (str disciplines))
     [form-control
      [:h3 "Create a new Match"]
      [date-time-picker {:label          "Date and Time of the Match"
@@ -40,8 +44,8 @@
        ]]
      [:br]
      [text-field {:variant       "standard"
-                  :label         "hello"
-                  :default-value "hallo"}]
+                  :label         "hallo"
+                  :value (str tags)}]
      ]))
 
 
