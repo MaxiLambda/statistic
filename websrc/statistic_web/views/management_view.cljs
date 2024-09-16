@@ -12,15 +12,36 @@
             ["@mui/material" :as mui]
             ["luxon" :refer [DateTime]]))
 
-(defonce match-form (r/atom {:date       (.now DateTime)
-                         :winner     0
-                         :tags       []
-                         :discipline nil                    ;;nil  of an empty string to use the first value in ::subs/disciplines as default
-                         :team1      []
-                         :team2      []
-                         }))
 
-(add-watch match-form :change-listener (fn [key ref old new] (println new)))
+;;date -> date
+;;winner -> 0,1,2
+;;discipline -> char(20)
+;;tag -> char(20)
+;;team1 -> [id]
+;;team2 -> [id]
+(defonce match-form (r/atom {:date       (.now DateTime)
+                             :winner     0
+                             :tags       []
+                             :discipline nil                ;;nil  of an empty string to use the first value in ::subs/disciplines as default
+                             :team1      []
+                             :team2      []
+                             }))
+
+;;add listener to print all state changes to the console
+(add-watch match-form :change-listener (fn [_key _ref _old new] (println new)))
+
+(defn update-players
+  "in-key is the key for which the selection was made
+   out-key is the key for the opposing team
+   selected-players are the ids of the selected players
+
+   => this function sets in-key to selected-players and removes all elements in selected-players from out-key"
+  [in-key out-key selected-players]
+  (swap! match-form assoc in-key selected-players)
+  (swap! match-form (fn [map] (assoc map out-key
+                                         ;;calculate out-key without elements from in-key
+                                         ;;=> use selected-players as set to check for membership
+                                         (remove (set selected-players) (out-key map))))))
 
 (defn management-view []
   (let [players @(re-frame/subscribe [::subs/players])
@@ -79,7 +100,7 @@
       [select {:labelId   "team1-label"
                :multiple  true
                :value     (:team1 @match-form)
-               :on-change #(->> % .-target .-value (swap! match-form assoc :team1))
+               :on-change #(->> % .-target .-value vec (update-players :team1 :team2))
                :variant   "outlined"}
        (for [player players]
          [menu-item {:value (:id player) :key (:id player)} (:name player)])
@@ -94,7 +115,7 @@
       [select {:labelId   "team2-label"
                :multiple  true
                :value     (:team2 @match-form)
-               :on-change #(->> % .-target .-value (swap! match-form assoc :team2))
+               :on-change #(->> % .-target .-value vec (update-players :team2 :team1))
                :variant   "outlined"}
        (for [player (remove (set (:team1 @match-form)) players)]
          [menu-item {:value (:id player) :key (:id player)} (:name player)])
@@ -108,11 +129,3 @@
 ;;name -> char(20)
 
 
-
-;;to create a new match
-;;date
-;;winner 0,1,2
-;;discipline char(20)
-;;tag char(20)
-;;team1 -> [id]
-;;team2 -> [id]
