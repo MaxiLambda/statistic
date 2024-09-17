@@ -19,7 +19,7 @@
 (defn initial-match-form []
   {:date       (.now DateTime)
    :winner     0
-   :tags       []
+   :tag        nil
    :discipline nil                                          ;;nil  of an empty string to use the first value in ::subs/disciplines as default
    :team1      []
    :team2      []
@@ -41,6 +41,22 @@
 ;;add listener to print all state changes to the console
 (add-watch match-form :change-listener (fn [_key _ref _old new] (println new)))
 (add-watch new-player :change-listener (fn [_key _ref _old new] (println new)))
+
+(defn match-form-valid
+  "check if match-form is valid"
+  [form]
+  (println form)
+  ;;only these parameters a checked, because all other fields are always in a valid state
+  ;;applies ONLY if they are not changed by external sources
+  (let [tag (:tag form)
+        discipline (:discipline form)
+        team1 (:team1 form)
+        team2 (:team2 form)]
+    (and
+      (< 0 (count tag))
+      (< 0 (count discipline))
+      (< 0 (count team1))
+      (< 0 (count team2)))))
 
 (defn update-players
   "in-key is the key for which the selection was made
@@ -87,16 +103,15 @@
         ]]
       [:br]
       [grid {:columns 2 :display "flex"}
-       [autocomplete {:fullWidth   true
-                      :sx          {:pr 1}
-                      :options     (or tags [])
-                      :freeSolo    true                     ;;enables custom values
-                      :multiple    true
-                      :on-change   #(->> %2 js->clj (swap! match-form assoc :tags))
+       [autocomplete {:fullWidth       true
+                      :sx              {:pr 1}
+                      :options         (or tags [])
+                      :freeSolo        true                 ;;enables custom values
+                      :on-input-change #(->> %2 js->clj (swap! match-form assoc :tag)) ;;on-change only fires on custom values...
                       ;;https://stackoverflow.com/questions/63944323/problem-with-autocomplete-material-ui-react-reagent-clojurescript
-                      :renderInput #(do
-                                      (set! (.-label %) "Match Tags")
-                                      (r/create-element mui/TextField %))}
+                      :renderInput     #(do
+                                          (set! (.-label %) "Match Tags")
+                                          (r/create-element mui/TextField %))}
         ]
        [autocomplete {:fullWidth       true
                       :sx              {:pl 1}
@@ -146,31 +161,34 @@
        ]
       [:br]
       ;;disable button on invalid input
-      [button {:variant "contained"}
+      [button {:variant  "contained"
+               :disabled (doto (not (match-form-valid @match-form)) println)
+               }
        "Create match -> Implement callback"]
       ]
      [:hr]
      [:h3 "Create a new Player"]
      [:br]
-     ;;name -> char(20)
-     [grid {:columns 2 :display "flex"}
+     (let [name (:name @new-player)
+           existing (map :name players)
+           invalid  ((comp not nil? some) (set existing) [name])]
+       [grid {:columns 2 :display "flex"}
       [form-control {:fullWidth true
                      :sx        {:mr 1}}
        [text-field {:placeholder "Player name"
                     :label       "Name"
                     :value       (:name @new-player)
                     :on-change   #(->> % .-target .-value (swap! new-player assoc :name))
-                    :error       (let [name (:name @new-player)
-                                       existing (map :name players)]
-                                   ((comp not nil? some) (set existing) [name]))}
+                    :error       invalid}
         ]
        ]
       ;;disable button on invalid input
       [button {:variant   "contained"
                :fullWidth true
-               :sx        {:ml 1}}
+               :sx        {:ml 1}
+               :disabled  (or invalid (= 0 (count name)))}
        "Create new Player -> Implement callback"]
-      ]
+      ])
      ]
     ))
 
