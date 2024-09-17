@@ -1,11 +1,13 @@
 (ns statistic-web.views.management-view
   (:require [re-frame.core :as re-frame]
             [reagent-mui.material.autocomplete :refer [autocomplete]]
+            [reagent-mui.material.button :refer [button]]
             [reagent-mui.material.form-control :refer [form-control]]
             [reagent-mui.material.grid :refer [grid]]
             [reagent-mui.material.input-label :refer [input-label]]
             [reagent-mui.material.menu-item :refer [menu-item]]
             [reagent-mui.material.select :refer [select]]
+            [reagent-mui.material.text-field :refer [text-field]]
             [reagent-mui.x.date-time-picker :refer [date-time-picker]]
             [reagent.core :as r]
             [statistic-web.subs.management-subs :as subs]
@@ -14,22 +16,31 @@
             ["luxon" :refer [DateTime]]))
 
 
+(defn initial-match-form []
+  {:date       (.now DateTime)
+   :winner     0
+   :tags       []
+   :discipline nil                                          ;;nil  of an empty string to use the first value in ::subs/disciplines as default
+   :team1      []
+   :team2      []
+   })
+
+(def initial-new-player {:name nil})
+
 ;;date -> date
 ;;winner -> 0,1,2
 ;;discipline -> char(20)
 ;;tag -> char(20)
 ;;team1 -> [id]
 ;;team2 -> [id]
-(defonce match-form (r/atom {:date       (.now DateTime)
-                             :winner     0
-                             :tags       []
-                             :discipline nil                ;;nil  of an empty string to use the first value in ::subs/disciplines as default
-                             :team1      []
-                             :team2      []
-                             }))
+(defonce match-form (r/atom (initial-match-form)))
+
+;;name -> char(20)
+(defonce new-player (r/atom initial-new-player))
 
 ;;add listener to print all state changes to the console
 (add-watch match-form :change-listener (fn [_key _ref _old new] (println new)))
+(add-watch new-player :change-listener (fn [_key _ref _old new] (println new)))
 
 (defn update-players
   "in-key is the key for which the selection was made
@@ -48,8 +59,9 @@
   (let [players @(re-frame/subscribe [::subs/players])
         tags @(re-frame/subscribe [::subs/tags])
         disciplines @(re-frame/subscribe [::subs/disciplines])]
-    [grid {:columns 1 :md true :style {:border "1px solid black" :padding "1%"}}
+    [grid {:columns 1 :style {:border "1px solid black" :padding "1%"}}
      [:h3 "Create a new Match"]
+     [:br]
      [form-control {:fullWidth true}
       [date-time-picker {:label          "Date and Time of the Match"
                          :format         "dd/MM/yyyy - HH:mm"
@@ -132,12 +144,33 @@
          ]
         ]
        ]
+      [:br]
+      ;;disable button on invalid input
+      [button {:variant "contained"}
+       "Create match -> Implement callback"]
+      ]
+     [:hr]
+     [:h3 "Create a new Player"]
+     [:br]
+     ;;name -> char(20)
+     [grid {:columns 2 :display "flex"}
+      [form-control {:fullWidth true
+                     :sx        {:mr 1}}
+       [text-field {:placeholder "Player name"
+                    :label       "Name"
+                    :value       (:name @new-player)
+                    :on-change   #(->> % .-target .-value (swap! new-player assoc :name))
+                    :error       (let [name (:name @new-player)
+                                       existing (map :name players)]
+                                   ((comp not nil? some) (set existing) [name]))}
+        ]
+       ]
+      ;;disable button on invalid input
+      [button {:variant   "contained"
+               :fullWidth true
+               :sx        {:ml 1}}
+       "Create new Player -> Implement callback"]
       ]
      ]
     ))
-
-
-;;TODO to create a new player form
-;;name -> char(20)
-
 
