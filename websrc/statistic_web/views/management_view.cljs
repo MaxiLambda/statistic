@@ -12,7 +12,7 @@
             [reagent.core :as r]
             [statistic-web.events.management-events :as events]
             [statistic-web.subs.management-subs :as subs]
-            [statistic-web.view-data.management-data :refer [match-form match-form-valid new-player]]
+            [statistic-web.view-data.management-data :refer [initial-match-form initial-new-player match-form match-form-valid new-player]]
             ["@mui/x-date-pickers/timeViewRenderers" :refer [renderTimeViewClock]]
             ["@mui/material" :as mui]))
 
@@ -64,18 +64,19 @@
        [autocomplete {:fullWidth       true
                       :sx              {:pr 1}
                       :options         (or tags [])
+                      :value           (or (:tag @match-form) "")
                       :freeSolo        true                 ;;enables custom values
                       :on-input-change #(->> %2 js->clj (swap! match-form assoc :tag)) ;;on-change only fires on custom values...
                       ;;https://stackoverflow.com/questions/63944323/problem-with-autocomplete-material-ui-react-reagent-clojurescript
                       :renderInput     #(do
-                                          (set! (.-label %) "Match Tags")
+                                          (set! (.-label %) "Match Tag")
                                           (r/create-element mui/TextField %))}
         ]
        [autocomplete {:fullWidth       true
                       :sx              {:pl 1}
                       :options         (or disciplines [])
                       :freeSolo        true                 ;;enables custom values
-                      :value           (or (:discipline match-form) "")
+                      :value           (or (:discipline @match-form) "")
                       :on-input-change #(->> %2 js->clj (swap! match-form assoc :discipline)) ;;on-change only fires on custom values...
                       ;;https://stackoverflow.com/questions/63944323/problem-with-autocomplete-material-ui-react-reagent-clojurescript
                       :renderInput     #(do
