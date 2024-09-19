@@ -1,7 +1,7 @@
 (ns statistic.rest.controller.open.match-data-controller
   (:require [clojure.data.json :as json]
             [compojure.core :refer [defroutes GET]]
-            [statistic.service.match :as match]))
+            [statistic.service.match-service :as match]))
 
 (defn tags-handler [_req]
         {:status  200

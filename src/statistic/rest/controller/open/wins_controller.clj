@@ -1,7 +1,7 @@
 (ns statistic.rest.controller.open.wins-controller
   (:require [clojure.data.json :as json]
             [compojure.core :refer [defroutes GET]]
-            [statistic.service.match :as match]))
+            [statistic.service.match-service :as match]))
 
 ;this might belong in a different handler
 (defn wins-handler [_req]

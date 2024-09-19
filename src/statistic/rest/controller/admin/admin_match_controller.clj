@@ -1,7 +1,7 @@
 (ns statistic.rest.controller.admin.admin-match-controller
   (:require [clojure.data.json :as json]
             [compojure.core :refer [POST defroutes]]
-            [statistic.service.match :as match])
+            [statistic.service.match-service :as match])
   (:import (org.postgresql.util PSQLException)))
 
 (defn create-match-handler

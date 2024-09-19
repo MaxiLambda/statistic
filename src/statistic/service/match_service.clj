@@ -1,4 +1,4 @@
-(ns statistic.service.match
+(ns statistic.service.match-service
   (:require [statistic.db.tables.matches :as matches]
             [statistic.db.tables.player-matches :as player-matches]
             [statistic.db.utils :refer [execute!]]))
