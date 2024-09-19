@@ -82,10 +82,9 @@
   corresponding teams in the player_matches table."
   [{players :players :as match-params}]
   (let [new-match-id (:id (matches/create-match match-params))]
-    (do
-      (for [{player :id team :team} players]
-        (player-matches/create-player-match {:match_id new-match-id :player_id player :team team}))
-      new-match-id)))
+    (doseq [{player :id team :team} players]
+      (player-matches/create-player-match {:match_id new-match-id :player_id player :team team}))
+    new-match-id))
 
 (defn get-used-disciplines
   "get all already used disciplines" []

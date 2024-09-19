@@ -13,15 +13,16 @@
                    :team2 -> id"
   [req]
   (let [{:keys [date winner discipline tag team1 team2]} (:body req)
-        team1-mapped (map #({:team 1 :id %}) team1)
-        team2-mapped (map #({:team 2 :id %}) team2)
-        players (concat team1-mapped team2-mapped)]
+        team1-mapped (map (fn [id] {:team 1 :id id}) team1)
+        team2-mapped (map (fn [id] {:team 2 :id id}) team2)
+        players (concat team1-mapped team2-mapped)
+        param {:date       date
+               :winner     winner
+               :discipline discipline
+               :tag        tag
+               :players    players}]
     (try
-      (let [new-match-id (match/create-new-match {:date       date
-                                                  :winner     winner
-                                                  :discipline discipline
-                                                  :tag        tag
-                                                  :players    players})]
+      (let [new-match-id (match/create-new-match param)]
         {:status  200
          :headers {"Content-Type" "text/json"}
          :body    (json/write-str {:new-match new-match-id})})

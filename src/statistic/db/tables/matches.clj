@@ -9,7 +9,7 @@
   "create a match, returns {:id} with the id of the created match"
   (let [query (str "INSERT INTO matches(datetime,winner,discipline,tag)
     VALUES('" datetime "','" winner "','" discipline "','" tag "')  RETURNING id")]
-    (execute-one! [query])))
+    (first (execute-one! [query]))))
 
 (defn get-all []
   (execute! ["SELECT * FROM matches"]))
