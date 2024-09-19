@@ -1,15 +1,15 @@
 (ns statistic.db.tables.matches
-  (:require [statistic.db.connection :refer [db]]
-            [statistic.db.utils :refer [execute! execute-one!]]))
+  (:require [statistic.db.utils :refer [execute! execute-one!]]))
 
 (defn create-match [{datetime   :date
                      winner     :winner
                      discipline :discipline
                      tag        :tag}]
+
   "create a match, returns {:id} with the id of the created match"
   (let [query (str "INSERT INTO matches(datetime,winner,discipline,tag)
     VALUES('" datetime "','" winner "','" discipline "','" tag "')  RETURNING id")]
-    (execute-one! db [query])))
+    (execute-one! [query])))
 
 (defn get-all []
   (execute! ["SELECT * FROM matches"]))

@@ -10,7 +10,7 @@
   (let [player-name (get-in [:body :name] req)]
     (if (nil? player-name)
       (do
-        (println "Parameter :name is missing from body")
+        (println "Parameter :name is missing from body: " {:body req})
         {:status 400})                                      ;;parameter is missing
       (try
         {:status  200

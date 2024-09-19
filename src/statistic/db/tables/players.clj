@@ -1,12 +1,10 @@
 (ns statistic.db.tables.players
-  (:require [next.jdbc :as jdbc]
-            [statistic.db.connection :refer [db]]
-            [statistic.db.utils :refer [execute!]]))
+  (:require [statistic.db.utils :refer [execute! execute-one!]]))
 
 (defn create-player [{name :name}]
   "create a new player, return its id {:id}"
   (let [query (str "INSERT INTO players(name) VALUES('" name "') RETURNING id")]
-    (jdbc/execute-one! db [query])))
+    (execute-one! [query])))
 
 (defn get-all
   "as [{:id :name}]"

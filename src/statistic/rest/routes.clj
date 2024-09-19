@@ -10,10 +10,11 @@
             [ring.util.response :as response]
             [statistic.authentication.admin-authentication :refer [authenticated?]]
             [statistic.authentication.basic-auth :refer [wrap-add-basic-prefix]]
+            [statistic.rest.controller.admin.admin-match-controller :as admin-match-controller]
             [statistic.rest.controller.admin.admin-player-controller :as admin-player-controller]
-            [statistic.rest.controller.open.wins-controller :as wins-controller]
             [statistic.rest.controller.open.match-data-controller :as match-data-controller]
-            [statistic.rest.controller.open.player-controller :as player-controller]))
+            [statistic.rest.controller.open.player-controller :as player-controller]
+            [statistic.rest.controller.open.wins-controller :as wins-controller]))
 
 (defn home-handler [_req]
   (response/file-response "public/index.html" {:root "resources"}))
@@ -25,7 +26,8 @@
            (GET "/" [] home-handler))
 
 (defroutes protected-routes
-           admin-player-controller/routes)
+           admin-player-controller/routes
+           admin-match-controller/routes)
 
 (defroutes all-routes
            ;;resources should be available publicly
@@ -39,6 +41,9 @@
 (def app-routes
   (-> all-routes
       wrap-add-basic-prefix
+      ;;parses request :body into keyword map
       (wrap-json-body {:keywords? true})
+      ;;parses request :params (headers and url) into keyword map
       keyword-params/wrap-keyword-params
+      ;;adds request params from headers and url to :params key
       params/wrap-params))
