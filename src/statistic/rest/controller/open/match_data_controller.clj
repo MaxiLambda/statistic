@@ -13,6 +13,12 @@
    :headers {"Content-Type" "text/json"}
    :body    (json/write-str (match/get-used-disciplines))})
 
+(defn matches-handler [_req]
+  {:status 200
+   :headers {"Content-Type" "text/json"}
+   :body    (json/write-str (match/get-all-matches-with-teams))})
+
 (defroutes routes
            (GET "/data/tags" [] tags-handler)
-           (GET "/data/disciplines" [] disciplines-handler))
+           (GET "/data/disciplines" [] disciplines-handler)
+           (GET "/data/matches" [] matches-handler))
