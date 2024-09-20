@@ -1,4 +1,4 @@
-(ns statistic-web.views.wrapper.app-container
+(ns statistic-web.views.app-container
   (:require [reagent-mui.material.box :refer [box]]))
 
 (defn app-container

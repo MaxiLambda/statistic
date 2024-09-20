@@ -1,11 +1,11 @@
-(ns statistic-web.views.wrapper.app-header
+(ns statistic-web.views.app-header
   (:require [re-frame.core :as re-frame]
             [reagent-mui.material.app-bar :refer [app-bar]]
             [reagent-mui.material.box :refer [box]]
             [reagent-mui.material.button :refer [button]]
             [reagent-mui.material.toolbar :refer [toolbar]]
             [reagent-mui.material.typography :refer [typography]]
-            [statistic-web.events.global-events :as events]))
+            [statistic-web.re-frame.global-events :as events]))
 
 (defn header [children]
   [:div

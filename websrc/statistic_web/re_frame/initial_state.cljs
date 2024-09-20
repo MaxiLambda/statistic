@@ -1,4 +1,4 @@
-(ns statistic-web.db.initial-state)
+(ns statistic-web.re-frame.initial-state)
 
 ;;The initial global state
 (def default-db

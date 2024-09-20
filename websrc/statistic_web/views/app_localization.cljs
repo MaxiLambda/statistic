@@ -1,4 +1,4 @@
-(ns statistic-web.views.wrapper.app-localization
+(ns statistic-web.views.app-localization
   (:require [reagent-mui.x.localization-provider :refer [localization-provider]]
             ["@mui/x-date-pickers/AdapterLuxon" :refer [AdapterLuxon]]))
 

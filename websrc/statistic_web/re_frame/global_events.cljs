@@ -1,8 +1,8 @@
-(ns statistic-web.events.global-events
+(ns statistic-web.re-frame.global-events
   (:require
     [day8.re-frame.http-fx]
     [re-frame.core :as re-frame]                            ;;necessary of effects in reg-event-fx
-    [statistic-web.db.initial-state :as db]))
+    [statistic-web.re-frame.initial-state :as db]))
 
 ;;used to automatically dispatch an event to load all data for a specific view
 (defn load-view-event-key [view]

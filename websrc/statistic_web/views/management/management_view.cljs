@@ -1,4 +1,4 @@
-(ns statistic-web.views.management-view
+(ns statistic-web.views.management.management-view
   (:require [re-frame.core :as re-frame]
             [reagent-mui.material.autocomplete :refer [autocomplete]]
             [reagent-mui.material.button :refer [button]]
@@ -10,9 +10,9 @@
             [reagent-mui.material.text-field :refer [text-field]]
             [reagent-mui.x.date-time-picker :refer [date-time-picker]]
             [reagent.core :as r]
-            [statistic-web.events.management-events :as events]
-            [statistic-web.subs.management-subs :as subs]
-            [statistic-web.view-data.management-data :refer [initial-match-form initial-new-player match-form match-form-valid new-player]]
+            [statistic-web.views.management.re-frame.management-events :as events]
+            [statistic-web.views.management.re-frame.management-subs :as subs]
+            [statistic-web.views.management.management-data :refer [initial-match-form initial-new-player match-form match-form-valid new-player]]
             ["@mui/x-date-pickers/timeViewRenderers" :refer [renderTimeViewClock]]
             ["@mui/material" :as mui]))
 

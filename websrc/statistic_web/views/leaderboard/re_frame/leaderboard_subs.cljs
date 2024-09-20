@@ -1,4 +1,4 @@
-(ns statistic-web.subs.leaderboard-subs
+(ns statistic-web.views.leaderboard.re-frame.leaderboard-subs
   (:require [re-frame.core :as re-frame]))
 
 ;;subscription handler for wins, only setup by :leaderboard at the moment

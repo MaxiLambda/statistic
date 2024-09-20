@@ -1,6 +1,6 @@
-(ns statistic-web.views.leaderboard-view
+(ns statistic-web.views.leaderboard.leaderboard-view
   (:require [re-frame.core :as re-frame]
-            [statistic-web.subs.leaderboard-subs :as subs]))
+            [statistic-web.views.leaderboard.re-frame.leaderboard-subs :as subs]))
 
 ;;this needs to be a function for re-frame/subscribe
 (defn leaderboard-view [] (let [player-wins @(re-frame/subscribe [::subs/wins])

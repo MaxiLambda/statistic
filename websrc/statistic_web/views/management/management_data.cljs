@@ -1,4 +1,4 @@
-(ns statistic-web.view-data.management-data
+(ns statistic-web.views.management.management-data
   (:require [reagent.core :as r]
             ["luxon" :refer [DateTime]]))
 

@@ -1,8 +1,8 @@
-(ns statistic-web.events.management-events
+(ns statistic-web.views.management.re-frame.management-events
   (:require [ajax.core :as ajax]
             [re-frame.core :as re-frame]
-            [statistic-web.events.global-events :as global-events]
-            [statistic-web.view-data.management-data :as data]))
+            [statistic-web.re-frame.global-events :as global-events]
+            [statistic-web.views.management.management-data :as data]))
 
 (re-frame/reg-event-fx
   :management-load

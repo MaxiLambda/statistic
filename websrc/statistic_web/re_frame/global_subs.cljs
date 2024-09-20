@@ -1,4 +1,4 @@
-(ns statistic-web.subs.global-subs
+(ns statistic-web.re-frame.global-subs
   (:require
    [re-frame.core :as re-frame]))
 

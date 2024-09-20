@@ -1,7 +1,7 @@
-(ns statistic-web.events.leaderboard-events
+(ns statistic-web.views.leaderboard.re-frame.leaderboard-events
   (:require [ajax.core :as ajax]
             [re-frame.core :as re-frame]
-            [statistic-web.events.global-events :as global-events]))
+            [statistic-web.re-frame.global-events :as global-events]))
 
 (re-frame/reg-event-fx
   :leaderboard-load

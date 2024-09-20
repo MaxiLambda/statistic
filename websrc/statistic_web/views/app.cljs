@@ -1,12 +1,12 @@
 (ns statistic-web.views.app
   (:require
     [re-frame.core :as re-frame]
-    [statistic-web.subs.global-subs :as subs]
-    [statistic-web.views.wrapper.app-container :refer [app-container]]
-    [statistic-web.views.wrapper.app-header :refer [header]]
-    [statistic-web.views.leaderboard-view :refer [leaderboard-view]]
-    [statistic-web.views.management-view :refer [management-view]]
-    [statistic-web.views.wrapper.app-localization :refer [app-localization]]))
+    [statistic-web.re-frame.global-subs :as subs]
+    [statistic-web.views.app-container :refer [app-container]]
+    [statistic-web.views.app-header :refer [header]]
+    [statistic-web.views.leaderboard.leaderboard-view :refer [leaderboard-view]]
+    [statistic-web.views.management.management-view :refer [management-view]]
+    [statistic-web.views.app-localization :refer [app-localization]]))
 
 ;;create views - STEP 5
 

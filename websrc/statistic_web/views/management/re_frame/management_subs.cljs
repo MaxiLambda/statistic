@@ -1,4 +1,4 @@
-(ns statistic-web.subs.management-subs
+(ns statistic-web.views.management.re-frame.management-subs
   (:require [re-frame.core :as re-frame]))
 
 (re-frame/reg-sub
