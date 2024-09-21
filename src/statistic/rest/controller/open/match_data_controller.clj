@@ -1,7 +1,8 @@
 (ns statistic.rest.controller.open.match-data-controller
   (:require [clojure.data.json :as json]
             [compojure.core :refer [defroutes GET]]
-            [statistic.service.match-service :as match]))
+            [statistic.service.match-service :as match]
+            [statistic.json-writer.date-value-wrapper :refer [date-value-wrapper]]))
 
 (defn tags-handler [_req]
         {:status  200
@@ -16,7 +17,8 @@
 (defn matches-handler [_req]
   {:status 200
    :headers {"Content-Type" "text/json"}
-   :body    (json/write-str (match/get-all-matches-with-teams))})
+   ;;add support for LocalDateTime values to json/write-str
+   :body    (json/write-str (match/get-all-matches-with-teams) :value-fn (date-value-wrapper))})
 
 (defroutes routes
            (GET "/data/tags" [] tags-handler)
