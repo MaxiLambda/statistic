@@ -24,5 +24,6 @@
   :main ^:skip-aot statistic.core
   :profiles {:uberjar {:aot :all}}
   :repl-options {:init-ns statistic.core}
-  :ring {:handler statistic.rest.routes/app-routes}
+  :ring {:handler statistic.rest.routes/app-routes
+         :init statistic.db.setup/db-setup}
   :plugins [[lein-ring "0.12.6"]])
