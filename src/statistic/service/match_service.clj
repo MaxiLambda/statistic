@@ -29,8 +29,8 @@
 
   If match is supplied, it is enriched with the teams, otherwise match is fetched from the db by using :match-id"
   [{match-in :match match-id :match-id}]
-  (let [match (doto (or match-in (some-> match-id matches/get-by-id)) println)
-        team (doto (get-teams {:match-id (:id match)}) println)
+  (let [match (or match-in (some-> match-id matches/get-by-id))
+        team  (get-teams {:match-id (:id match)})
         team1 (first (filter #(-> % :team #{1}) team))
         team2 (first (filter #(-> % :team #{2}) team))]
     (-> match
