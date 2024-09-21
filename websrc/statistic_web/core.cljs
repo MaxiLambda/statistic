@@ -6,6 +6,7 @@
    [statistic-web.re-frame.global-events :as events]
     ;;IMPORTANT: require all ns where events are defined
    [statistic-web.views.management.re-frame.management-events]
+   [statistic-web.views.archive.re-frame.archive-events]
    [statistic-web.views.leaderboard.re-frame.leaderboard-events]))
 
 (defn ^:dev/after-load mount-root []

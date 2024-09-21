@@ -6,6 +6,7 @@
     [statistic-web.views.app-header :refer [header]]
     [statistic-web.views.leaderboard.leaderboard-view :refer [leaderboard-view]]
     [statistic-web.views.management.management-view :refer [management-view]]
+    [statistic-web.views.archive.archive-view :refer [archive-view]]
     [statistic-web.views.app-localization :refer [app-localization]]))
 
 ;;create views - STEP 5
@@ -16,6 +17,7 @@
 (defn views [view-key]
   (view-key {:leaderboard (leaderboard-view)
              :management  (management-view)
+             :archive     (archive-view)
              :failure     error-view}))
 
 (defn app-panel []

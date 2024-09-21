@@ -27,6 +27,11 @@
        "Leaderboard"
        ]
       [button
+       {:variant "contained"
+        :color "secondary"
+        :on-click #(re-frame/dispatch [::events/path-change :archive])}
+       "Archive"]
+      [button
        {:variant  "contained"
         :color    "primary"
         :on-click #(re-frame/dispatch [::events/path-change :management])}
