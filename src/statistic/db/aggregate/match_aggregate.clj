@@ -3,6 +3,11 @@
             [statistic.db.tables.player-matches :as player-matches]
             [statistic.db.utils :refer [execute!]]))
 
+(defn vector-no-nil [& args]
+  (->> args
+       (filter (comp not nil?))
+       (apply vector)))
+
 (defn get-teams
   "get all teams for all matches - enriched with player names in teams as:
   [{:id int, :team int, :members string[], :member_ids int[]}]
@@ -13,15 +18,16 @@
     "
   ([] (get-teams {}))
   ([{match-id :match-id team :team}]
-   (let [match-clause (some-> match-id (#(str "AND matches.id = " % " ")))
-         team-clause (some-> team (#(str "AND player_matches.team = " % " ")))]
-     (execute! [(str "SELECT matches.id, player_matches.team, array_agg(players.name) as members, array_agg(players.id) as member_ids "
-                     "FROM matches, players, player_matches "
-                     "WHERE player_matches.match_id = matches.id "
-                     "AND player_matches.player_id = players.id "
-                     match-clause
-                     team-clause
-                     "GROUP BY matches.id, player_matches.team")]))))
+   (let [match-clause (if (-> match-id nil? not) "AND matches.id = ? " "")
+         team-clause (if (-> team nil? not) "AND player_matches.team = ? " "")]
+     (execute! (vector-no-nil (str "SELECT matches.id, player_matches.team, array_agg(players.name) as members, "
+                                   "array_agg(players.id) as member_ids "
+                                   "FROM matches, players, player_matches "
+                                   "WHERE player_matches.match_id = matches.id "
+                                   "AND player_matches.player_id = players.id "
+                                   match-clause
+                                   team-clause
+                                   "GROUP BY matches.id, player_matches.team") match-id team)))))
 
 (defn get-match-with-teams
   "enrich a match with its teams.
@@ -52,20 +58,25 @@
   This might happen for example if no player won with the given tag.
 
   optional:
-    :player-id => only return wins for this player
-    :tag       => only count wins with the given tag"
+    :player-id        => only return wins for this player
+    :tag              => only count wins with the given tag
+    :discipline       => only count wins with the given discipline"
   ([] (get-number-wins {}))
-  ([{player :player-id tag :tag}]
-   (let [player-clause (some-> player (#(str "AND players.id = " % " ")))
-         tag-clause (some-> tag (#(str "AND matches.tag LIKE '" % "' ")))]
-     (execute! [(str "SELECT players.id, players.name, count(players.name) "
-                     "FROM players, player_matches, matches "
-                     "WHERE matches.winner = player_matches.team "
-                     player-clause
-                     tag-clause
-                     "AND player_matches.match_id = matches.id "
-                     "AND player_matches.player_id = players.id "
-                     "GROUP BY players.name, players.id")]))))
+  ([{player :player-id tag :tag discipline :discipline}]
+   (let [player-clause (if (-> player nil? not) "AND players.id = ? " "")
+         tag-clause (if (-> tag nil? not) "AND matches.tag LIKE ? " "")
+         discipline-clause (if (-> discipline nil? not) "AND matches.discipline LIKE ? " "")]
+     (execute! (vector-no-nil
+                 (str "SELECT players.id, players.name, count(players.name) "
+                      "FROM players, player_matches, matches "
+                      "WHERE matches.winner = player_matches.team "
+                      player-clause
+                      tag-clause
+                      discipline-clause
+                      "AND player_matches.match_id = matches.id "
+                      "AND player_matches.player_id = players.id "
+                      "GROUP BY players.name, players.id")
+                 player tag discipline)))))
 
 (defn create-new-match
   "creates a new match in the db. Can't handle new players.
