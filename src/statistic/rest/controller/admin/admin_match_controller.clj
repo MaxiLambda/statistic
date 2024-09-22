@@ -2,7 +2,8 @@
   (:require [clojure.data.json :as json]
             [compojure.core :refer [POST defroutes]]
             [statistic.db.aggregate.match-aggregate :as match-aggregate])
-  (:import (org.postgresql.util PSQLException)))
+  (:import (java.time LocalDate LocalDateTime OffsetDateTime)
+           (org.postgresql.util PSQLException)))
 
 (defn create-match-handler
   "requires :body {:date
@@ -16,7 +17,7 @@
         team1-mapped (map (fn [id] {:team 1 :id id}) team1)
         team2-mapped (map (fn [id] {:team 2 :id id}) team2)
         players (concat team1-mapped team2-mapped)
-        param {:date       date
+        param {:date       (OffsetDateTime/parse date)
                :winner     winner
                :discipline discipline
                :tag        tag

@@ -4,10 +4,10 @@
             [statistic.db.aggregate.match-aggregate :as match-aggregate]))
 
 ;this might belong in a different handler
-(defn wins-handler [_req]
+(defn wins-handler [{params :params}]
   {:status  200
    :headers {"Content-Type" "text/json"}
-   :body    (json/write-str (match-aggregate/get-number-wins))})
+   :body    (json/write-str (match-aggregate/get-number-wins (select-keys params [:tag :discipline])))})
 
 (defroutes routes
            (GET "/wins" [] wins-handler))
