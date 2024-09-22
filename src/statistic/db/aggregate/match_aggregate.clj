@@ -1,4 +1,4 @@
-(ns statistic.service.match-service
+(ns statistic.db.aggregate.match-aggregate
   (:require [statistic.db.tables.matches :as matches]
             [statistic.db.tables.player-matches :as player-matches]
             [statistic.db.utils :refer [execute!]]))
@@ -85,11 +85,3 @@
     (doseq [{player :id team :team} players]
       (player-matches/create-player-match {:match_id new-match-id :player_id player :team team}))
     new-match-id))
-
-(defn get-used-disciplines
-  "get all already used disciplines" []
-  (map :discipline (matches/get-used-disciplines)))
-
-(defn get-used-tags
-  "get all already used tags" []
-  (map :tag (matches/get-used-tags)))

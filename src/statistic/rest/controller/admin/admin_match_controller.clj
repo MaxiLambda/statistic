@@ -1,7 +1,7 @@
 (ns statistic.rest.controller.admin.admin-match-controller
   (:require [clojure.data.json :as json]
             [compojure.core :refer [POST defroutes]]
-            [statistic.service.match-service :as match])
+            [statistic.db.aggregate.match-aggregate :as match-aggregate])
   (:import (org.postgresql.util PSQLException)))
 
 (defn create-match-handler
@@ -22,7 +22,7 @@
                :tag        tag
                :players    players}]
     (try
-      (let [new-match-id (match/create-new-match param)]
+      (let [new-match-id (match-aggregate/create-new-match param)]
         {:status  200
          :headers {"Content-Type" "text/json"}
          :body    (json/write-str {:new-match new-match-id})})
