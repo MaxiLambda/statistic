@@ -3,7 +3,8 @@
             [re-frame.core :as re-frame]
             [reagent-mui.material.grid :refer [grid]]
             [reagent-mui.material.typography :refer [typography]]
-            [statistic-web.views.archive.re-frame.archive-subs :as subs]))
+            [statistic-web.views.archive.re-frame.archive-subs :as subs]
+            ["luxon" :as luxon]))
 
 (defn centered-item
   "An Item in a grid container. Content is aligned in the center.
@@ -23,7 +24,10 @@
 (defn match-component [{:keys          [id datetime winner discipline tag]
                         {team1 :names} :team1
                         {team2 :names} :team2}]
-  (let [time (js/Date. datetime)
+  (let [time
+        (as-> datetime $
+              (.fromISO (.-DateTime luxon) $)
+              (.toFormat $ "dd/MM/yyyy - HH:mm"))
         [team1-state team1-color] (case winner 0 ["" "blue"]
                                                1 ["Winner" "green"]
                                                2 ["Loser" "red"])
@@ -31,7 +35,7 @@
                                                1 ["Loser" "red"]
                                                2 ["Winner" "green"])]
     [grid {:key id :container true}
-     [grid {:item true}
+     [grid {:item true :xs 12}
       [:h3 (str "Match (" discipline "): " tag " - " time)]
       ]
      [centered-item 5 team1-state {:font-weight "bold"}]
