@@ -5,9 +5,7 @@
                             playerId :player_id
                             team     :team}]
   "create a match"
-  (let [query (str "INSERT INTO player_matches(match_id,player_id,team)
-    VALUES('" matchId "','" playerId "','" team "')")]
-    (execute-one! [query])))
+  (execute-one! ["INSERT INTO player_matches VALUES (?,?,?)" matchId playerId team]))
 
 (defn get-all []
   (execute! ["SELECT * from player_matches"]))

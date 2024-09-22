@@ -7,9 +7,9 @@
                      tag        :tag}]
 
   "create a match, returns {:id} with the id of the created match"
-  (let [query (str "INSERT INTO matches(datetime,winner,discipline,tag)
-    VALUES('" datetime "','" winner "','" discipline "','" tag "')  RETURNING id")]
-    (first (execute-one! [query]))))
+
+  (first (execute-one! ["INSERT INTO matches(datetime,winner,discipline,tag)
+    VALUES(?,?,?,?) RETURNING id" datetime winner discipline tag])))
 
 (defn get-all []
   (execute! ["SELECT * FROM matches"]))
