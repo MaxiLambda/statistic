@@ -15,7 +15,7 @@
   (execute! ["SELECT * FROM matches"]))
 
 (defn get-used-tags []
-  (map :tag  (execute! ["SELECT DISTINCT tag FROM matches"])))
+  (map :tag (execute! ["SELECT DISTINCT tag FROM matches"])))
 
 (defn get-used-disciplines []
   (map :discipline (execute! ["SELECT DISTINCT discipline FROM matches"])))

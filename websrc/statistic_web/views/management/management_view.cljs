@@ -10,9 +10,9 @@
             [reagent-mui.material.text-field :refer [text-field]]
             [reagent-mui.x.date-time-picker :refer [date-time-picker]]
             [reagent.core :as r]
+            [statistic-web.views.management.management-data :refer [initial-match-form initial-new-player match-form match-form-valid new-player]]
             [statistic-web.views.management.re-frame.management-events :as events]
             [statistic-web.views.management.re-frame.management-subs :as subs]
-            [statistic-web.views.management.management-data :refer [initial-match-form initial-new-player match-form match-form-valid new-player]]
             ["@mui/x-date-pickers/timeViewRenderers" :refer [renderTimeViewClock]]
             ["@mui/material" :as mui]))
 

@@ -1,6 +1,6 @@
 (ns statistic.rest.controller.open.player-controller
   (:require [clojure.data.json :as json]
-            [compojure.core :refer [defroutes GET]]
+            [compojure.core :refer [GET defroutes]]
             [statistic.db.tables.players :as players]))
 
 (defn players-handler [_req]

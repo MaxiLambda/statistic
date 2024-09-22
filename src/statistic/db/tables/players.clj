@@ -3,7 +3,7 @@
 
 (defn create-player [{name :name}]
   "create a new player, return its id {:id}"
-    (execute-one! ["INSERT INTO players(name) VALUES (?) RETURNING id" name]))
+  (execute-one! ["INSERT INTO players(name) VALUES (?) RETURNING id" name]))
 
 (defn get-all
   "as [{:id :name}]"

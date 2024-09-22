@@ -1,13 +1,13 @@
 (ns statistic-web.core
   (:require
-   [reagent.dom :as rdom]
-   [re-frame.core :as re-frame]
-   [statistic-web.views.app :as views]
-   [statistic-web.re-frame.global-events :as events]
+    [re-frame.core :as re-frame]
+    [reagent.dom :as rdom]
+    [statistic-web.re-frame.global-events :as events]
+    [statistic-web.views.app :as views]
     ;;IMPORTANT: require all ns where events are defined
-   [statistic-web.views.management.re-frame.management-events]
-   [statistic-web.views.archive.re-frame.archive-events]
-   [statistic-web.views.leaderboard.re-frame.leaderboard-events]))
+    [statistic-web.views.archive.re-frame.archive-events]
+    [statistic-web.views.leaderboard.re-frame.leaderboard-events]
+    [statistic-web.views.management.re-frame.management-events]))
 
 (defn ^:dev/after-load mount-root []
   (re-frame/clear-subscription-cache!)

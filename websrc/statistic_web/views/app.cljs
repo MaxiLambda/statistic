@@ -4,10 +4,10 @@
     [statistic-web.re-frame.global-subs :as subs]
     [statistic-web.views.app-container :refer [app-container]]
     [statistic-web.views.app-header :refer [header]]
-    [statistic-web.views.leaderboard.leaderboard-view :refer [leaderboard-view]]
-    [statistic-web.views.management.management-view :refer [management-view]]
+    [statistic-web.views.app-localization :refer [app-localization]]
     [statistic-web.views.archive.archive-view :refer [archive-view]]
-    [statistic-web.views.app-localization :refer [app-localization]]))
+    [statistic-web.views.leaderboard.leaderboard-view :refer [leaderboard-view]]
+    [statistic-web.views.management.management-view :refer [management-view]]))
 
 ;;create views - STEP 5
 

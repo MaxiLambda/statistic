@@ -1,6 +1,6 @@
 (ns statistic.rest.controller.open.wins-controller
   (:require [clojure.data.json :as json]
-            [compojure.core :refer [defroutes GET]]
+            [compojure.core :refer [GET defroutes]]
             [statistic.db.aggregate.match-aggregate :as match-aggregate]))
 
 ;this might belong in a different handler
