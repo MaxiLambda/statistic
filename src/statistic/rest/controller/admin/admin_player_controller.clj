@@ -7,10 +7,10 @@
 (defn create-player-handler
   "requires :body {:name <name>}"
   [req]
-  (let [player-name (get-in [:body :name] req)]
+  (let [player-name (get-in req [:body :name])]
     (if (nil? player-name)
       (do
-        (println "Parameter :name is missing from body: " {:body req})
+        (println "Parameter :name is missing from body: " (:body req))
         {:status 400})                                      ;;parameter is missing
       (try
         {:status  200
