@@ -14,8 +14,10 @@
 (defn get-all []
   (execute! ["SELECT * FROM matches"]))
 
-(defn get-used-tags []
-  (map :tag (execute! ["SELECT DISTINCT tag FROM matches"])))
+(defn get-used-tags
+  "Fetches all available tags, can be optionally reduced to only tags for {:discipline}"
+  ([] (map :tag (execute! ["SELECT DISTINCT tag FROM matches"])))
+  ([{discipline :discipline}] (map :tag (execute! ["SELECT DISTINCT tag FROM matches WHERE discipline LIKE ?" discipline]))))
 
 (defn get-used-disciplines []
   (map :discipline (execute! ["SELECT DISTINCT discipline FROM matches"])))

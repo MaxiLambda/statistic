@@ -6,3 +6,13 @@
   ::wins
   (fn [db]
     (-> db :view :params :wins)))
+
+(re-frame/reg-sub
+  ::disciplines
+  (fn [db]
+    (-> db :view :params :disciplines)))
+
+(re-frame/reg-sub
+  ::tags
+  (fn [db]
+    (-> db :view :params :tags)))

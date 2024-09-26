@@ -59,13 +59,16 @@
 
   optional:
     :player-id        => only return wins for this player
-    :tag              => only count wins with the given tag
-    :discipline       => only count wins with the given discipline"
+    :discipline       => only count wins with the given discipline
+    :tag              => only count wins with the given tag (only works when discipline is set)"
   ([] (get-number-wins {}))
   ([{player :player-id tag :tag discipline :discipline}]
-   (let [player-clause (if (-> player nil? not) "AND players.id = ? " "")
-         tag-clause (if (-> tag nil? not) "AND matches.tag LIKE ? " "")
-         discipline-clause (if (-> discipline nil? not) "AND matches.discipline LIKE ? " "")]
+   (let [is-player-set (-> player nil? not)
+         is-discipline-set (-> discipline nil? not)
+         is-tag-set (-> tag nil? not)
+         player-clause (if is-player-set "AND players.id = ? " "")
+         discipline-clause (if is-discipline-set "AND matches.discipline LIKE ? " "")
+         tag-clause (if (and is-discipline-set is-tag-set) "AND matches.tag LIKE ? " "")]
      (execute! (vector-no-nil
                  (str "SELECT players.id, players.name, count(players.name) "
                       "FROM players, player_matches, matches "

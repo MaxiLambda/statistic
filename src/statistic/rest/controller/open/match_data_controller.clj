@@ -5,10 +5,13 @@
             [statistic.db.tables.matches :as matches]
             [statistic.json-writer.date-value-wrapper :refer [date-value-wrapper]]))
 
-(defn tags-handler [_req]
-  {:status  200
-   :headers {"Content-Type" "text/json"}
-   :body    (json/write-str (matches/get-used-tags))})
+(defn tags-handler [req]
+  (let [discipline (get-in req [:params :discipline])]
+    {:status  200
+     :headers {"Content-Type" "text/json"}
+     :body    (json/write-str (if (nil? discipline)
+                                (matches/get-used-tags)
+                                (matches/get-used-tags {:discipline discipline})))}))
 
 (defn disciplines-handler [_req]
   {:status  200

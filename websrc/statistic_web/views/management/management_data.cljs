@@ -33,7 +33,6 @@
 (defn match-form-valid
   "check if match-form is valid"
   [form]
-  (println form)
   ;;only these parameters a checked, because all other fields are always in a valid state
   ;;applies ONLY if they are not changed by external sources
   (let [tag (:tag form)
