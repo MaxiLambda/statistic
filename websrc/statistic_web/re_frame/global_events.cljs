@@ -1,5 +1,6 @@
 (ns statistic-web.re-frame.global-events
   (:require
+    [ajax.core :as ajax]
     [day8.re-frame.http-fx]
     [re-frame.core :as re-frame]                            ;;necessary of effects in reg-event-fx
     [statistic-web.re-frame.initial-state :as db]))
@@ -50,3 +51,19 @@
         (do
           (println "Params changed for view" view-name "but current view is" current-view)
           db)))))
+
+(defn fetch-tags [success-event]
+  {:method          :get
+   :uri             "/data/tags"
+   :format          (ajax/json-request-format)
+   :response-format (ajax/json-response-format {:keywords? true})
+   :on-failure      [::path-change {:name :failure}]
+   :on-success      [success-event]})
+
+(defn fetch-disciplines [success-event]
+  {:method          :get
+   :uri             "/data/disciplines"
+   :format          (ajax/json-request-format)
+   :response-format (ajax/json-response-format {:keywords? true})
+   :on-failure      [::path-change {:name :failure}]
+   :on-success      [success-event]})

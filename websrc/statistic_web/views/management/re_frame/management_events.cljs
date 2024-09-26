@@ -15,18 +15,8 @@
                    :response-format (ajax/json-response-format {:keywords? true})
                    :on-failure      [::global-events/path-change {:name :failure}]
                    :on-success      [::players-fetched]}
-                  {:method          :get
-                   :uri             "/data/tags"
-                   :format          (ajax/json-request-format)
-                   :response-format (ajax/json-response-format {:keywords? true})
-                   :on-failure      [::global-events/path-change {:name :failure}]
-                   :on-success      [::tags-fetched]}
-                  {:method          :get
-                   :uri             "/data/disciplines"
-                   :format          (ajax/json-request-format)
-                   :response-format (ajax/json-response-format {:keywords? true})
-                   :on-failure      [::global-events/path-change {:name :failure}]
-                   :on-success      [::disciplines-fetched]}]}))
+                  (global-events/fetch-tags ::tags-fetched)
+                  (global-events/fetch-disciplines ::disciplines-fetched)]}))
 
 (re-frame/reg-event-fx
   ::players-fetched
