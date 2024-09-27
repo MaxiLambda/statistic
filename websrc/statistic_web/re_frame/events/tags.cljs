@@ -11,7 +11,7 @@
                :uri             "/data/tags"
                :format          (ajax/json-request-format)
                :response-format (ajax/json-response-format {:keywords? true})
-               :on-failure      [::global-events/path-change {:name :failure}]
+               :on-failure      [::global-events/path-change :error]
                :on-success      success-event}]
       {:http-xhrio (if (nil? discipline)
                      req

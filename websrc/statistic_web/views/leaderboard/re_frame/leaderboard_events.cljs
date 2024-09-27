@@ -19,5 +19,5 @@
                   :params          (select-keys modifiers [:tag :discipline])
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
-                  :on-failure      [::global-events/path-change {:name :failure}]
+                  :on-failure      [::global-events/path-change :error]
                   :on-success      [::global-events/param-change [:wins] :leaderboard]}}))

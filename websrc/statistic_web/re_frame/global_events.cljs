@@ -6,9 +6,8 @@
 
 ;;used to automatically dispatch an event to load all data for a specific view
 (defn load-view-event-key [view]
-  "gets the :view map from the db and dispatches a ::<:name view>-load event"
+  "gets the :view :name value from the db and dispatches a ::<:name view>-load event"
   (-> view
-      :name
       name
       (str "-load")
       keyword))
@@ -19,23 +18,14 @@
   (fn [_cofx _event]
     {:db       db/default-db
      ;;dispatch load view event for initial view
-     :dispatch [(load-view-event-key (:view db/default-db))]}))
-
-;;handles view change
-;;supports change by "<:view>" and "{:name <:view> :params {...}}"
-(defmulti path-change (fn [_ [_ param]] (keyword? param)))
-(defmethod path-change true [cofx [event-key new-view]]
-  (path-change cofx [event-key {:name new-view}]))
-(defmethod path-change false [{:keys [db]} [_event-key new-view]]
-  {:db       (assoc db :view
-                       ;;add empty params to new view, if no value for params is set in new-view
-                       (merge {:params {}} new-view))
-   :dispatch [(load-view-event-key new-view)]})
+     :dispatch [(load-view-event-key (-> db/default-db :view :name))]}))
 
 ;;handler for view change
 (re-frame/reg-event-fx
   ::path-change
-  path-change)
+  (fn [{:keys [db]} [_event-key key & load-params]]
+       {:db       (assoc-in db [:view :name] key)
+        :dispatch [(load-view-event-key key) load-params]}))
 
 ;;handles the change of parameters
 ;;body is the new value, param-path describes the path or key of the parameter

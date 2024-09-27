@@ -6,6 +6,7 @@
     [statistic-web.views.app :as views]
     ;;IMPORTANT: require all ns where events are defined
     [statistic-web.views.archive.re-frame.archive-events]
+    [statistic-web.views.error.re-frame.error-events]
     [statistic-web.views.leaderboard.re-frame.leaderboard-events]
     [statistic-web.views.management.re-frame.management-events]))
 

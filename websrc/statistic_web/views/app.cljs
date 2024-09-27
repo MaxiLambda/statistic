@@ -6,23 +6,20 @@
     [statistic-web.views.app-header :refer [header]]
     [statistic-web.views.app-localization :refer [app-localization]]
     [statistic-web.views.archive.archive-view :refer [archive-view]]
+    [statistic-web.views.error.error-view :refer [error-view]]
     [statistic-web.views.leaderboard.leaderboard-view :refer [leaderboard-view]]
     [statistic-web.views.management.management-view :refer [management-view]]))
 
 ;;create views - STEP 5
 
-;;TODO make prettier; move to separate file
-(def error-view [:p "An error occurred"])
-
 (defn views [view-key]
   (view-key {:leaderboard (leaderboard-view)
              :management  (management-view)
              :archive     (archive-view)
-             :failure     error-view}))
+             :error       (error-view)}))
 
 (defn app-panel []
   (-> @(re-frame/subscribe [::subs/view])
-      :name                                                 ;;get the view as a key
       views                                                 ;;resolve to the correct view
       app-container                                         ;;container for default body
       header

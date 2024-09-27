@@ -18,7 +18,7 @@
    ])
 
 (defn header [children]
-  (let [view (:name @(re-frame/subscribe [::subs/view]))]
+  (let [view @(re-frame/subscribe [::subs/view])]
     [:div
      [box
       {:sx {:flex-grow 1}}

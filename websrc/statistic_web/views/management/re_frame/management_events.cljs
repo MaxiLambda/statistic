@@ -15,7 +15,7 @@
                   :uri             "/players"
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
-                  :on-failure      [::global-events/path-change {:name :failure}]
+                  :on-failure      [::global-events/path-change :error]
                   :on-success      [::global-events/param-change [:players] :management]}
      :dispatch-n [[::tag-events/fetch-tags [::global-events/param-change [:tags] :management]]
                   [::discipline-events/fetch-disciplines [::global-events/param-change [:disciplines] :management]]]}))
@@ -29,7 +29,7 @@
                   :params          params
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
-                  :on-failure      [::global-events/path-change {:name :failure}]
+                  :on-failure      [::global-events/path-change :error]
                   :on-success      [:management-load]}}))
 
 (re-frame/reg-event-fx
@@ -40,5 +40,5 @@
                   :params          params
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
-                  :on-failure      [::global-events/path-change {:name :failure}]
+                  :on-failure      [::global-events/path-change :error]
                   :on-success      [:management-load]}}))
