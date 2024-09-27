@@ -3,19 +3,16 @@
             [re-frame.core :as re-frame]
             [statistic-web.re-frame.global-events :as global-events]))
 
-;;modifiers are an optional map of {:discipline :tag}, :tag is only handled if :discipline is given
 (re-frame/reg-event-fx
   :leaderboard-load
   (fn [_cofx _event]
     ;;TODO UI of leaderboard
-    ;;TODO remove prints
     {:http-xhrio (global-events/fetch-disciplines ::disciplines-fetched)
      :dispatch   [::fetch-wins]}))
 
-;;[::fetch-tags (select-keys modifiers [:discipline])]
-
 (re-frame/reg-event-fx
   ::fetch-wins
+  ;;modifiers are an optional map of {:discipline :tag}, :tag is only handled if :discipline is given
   (fn [_cofx [_event-key & {:as modifiers}]]
     {:http-xhrio {:method          :get
                   :uri             "/wins"

@@ -1,9 +1,15 @@
 (ns statistic-web.views.leaderboard.leaderboard-view
   (:require [re-frame.core :as re-frame]
             [reagent-mui.material.form-control :refer [form-control]]
+            [reagent-mui.material.grid :refer [grid]]
             [reagent-mui.material.input-label :refer [input-label]]
             [reagent-mui.material.menu-item :refer [menu-item]]
             [reagent-mui.material.select :refer [select]]
+            [reagent-mui.material.table :refer [table]]
+            [reagent-mui.material.table-body :refer [table-body]]
+            [reagent-mui.material.table-cell :refer [table-cell]]
+            [reagent-mui.material.table-head :refer [table-head]]
+            [reagent-mui.material.table-row :refer [table-row]]
             [reagent.core :as r]
             [statistic-web.re-frame.global-events :as global-events]
             [statistic-web.views.leaderboard.re-frame.leaderboard-events :as events]
@@ -37,41 +43,60 @@
                                 ;;sort players descending (wins) by swapping sign
                                 sorted-players (sort-by #(-> % :count -) player-wins)
                                 disciplines @(re-frame/subscribe [::subs/disciplines])
-                                tags @(re-frame/subscribe [::subs/tags])]
+                                tags @(re-frame/subscribe [::subs/tags])
+                                tag-selection-visibility (if (-> @modifiers :discipline nil? not)
+                                                           "visible"
+                                                           "hidden")]
                             [:<>
-                             [form-control {:fullWidth true
-                                            :sx        {:pr 1}} ;;if select is not wrapped in its own form-control the label goes crazy
-                              [input-label {:id "disciplines-label"
-                                            :sx {:bgcolor "background.default"}}
-                               "Discipline"
+                             [:h1 "Leaderboard"]
+                             [:br]
+                             [grid {:columns 2 :display "flex"}
+                              [form-control {:fullWidth true
+                                             :sx        {:pr 1}} ;;if select is not wrapped in its own form-control the label goes crazy
+                               [input-label {:id "disciplines-label"
+                                             :sx {:bgcolor "background.default"}}
+                                "Discipline"
+                                ]
+                               [select {:labelId   "disciplines-label"
+                                        :value     (or (:discipline @modifiers) "")
+                                        :on-change #(->> % .-target .-value change-discipline)
+                                        :variant   "outlined"}
+                                (for [discipline disciplines]
+                                  [menu-item {:value discipline :key discipline} discipline])
+                                [menu-item {:value nil :key nil :sx {:color "grey"}} "Clear"]
+                                ]
                                ]
-                              [select {:labelId   "disciplines-label"
-                                       :value     (or (:discipline @modifiers) "")
-                                       :on-change #(->> % .-target .-value change-discipline)
-                                       :variant   "outlined"}
-                               (for [discipline disciplines]
-                                 [menu-item {:value discipline :key discipline} discipline])
-                               [menu-item {:value nil :key nil :sx {:color "grey"}} "Clear"]
+                              [form-control {:fullWidth true
+                                             :sx        {:pr         1
+                                                         :visibility tag-selection-visibility}} ;;if select is not wrapped in its own form-control the label goes crazy
+                               [input-label {:id "tags-label"
+                                             :sx {:bgcolor "background.default"}}
+                                "Tag"
+                                ]
+                               [select {:labelId   "tags-label"
+                                        :value     (or (:tag @modifiers) "")
+                                        :on-change #(->> % .-target .-value change-tag)
+                                        :variant   "outlined"}
+                                (for [tag tags]
+                                  [menu-item {:value tag :key tag} tag])
+                                [menu-item {:value nil :key nil :sx {:color "grey"}} "Clear"]
+                                ]
                                ]
                               ]
-                             (when (-> @modifiers :discipline nil? not)
-                               [form-control {:fullWidth true
-                                              :sx        {:pr 1}} ;;if select is not wrapped in its own form-control the label goes crazy
-                                [input-label {:id "tags-label"
-                                              :sx {:bgcolor "background.default"}}
-                                 "Tag"
-                                 ]
-                                [select {:labelId   "tags-label"
-                                         :value     (or (:tag @modifiers) "")
-                                         :on-change #(->> % .-target .-value change-tag)
-                                         :variant   "outlined"}
-                                 (for [tag tags]
-                                   [menu-item {:value tag :key tag} tag])
-                                 [menu-item {:value nil :key nil :sx {:color "grey"}} "Clear"]
-                                 ]
-                                ])
-                             (for [player sorted-players]   ;;for instead of map because hiccup has special handling for vectors
-                               [:p
-                                {:key (:id player)}
-                                (str (:name player) ":") (:count player)])
+
+                             [table
+                              [table-head
+                               [table-row
+                                [table-cell "Player"]
+                                [table-cell "Wins"]
+                                ]
+                               ]
+                              [table-body
+                               (for [player sorted-players] ;;for instead of map because hiccup has special handling for vectors
+                                 [table-row {:key (:id player)}
+                                  [table-cell (:name player)]
+                                  [table-cell (:count player)]
+                                  ])
+                               ]
+                              ]
                              ]))
