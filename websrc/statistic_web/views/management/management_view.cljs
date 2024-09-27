@@ -35,8 +35,7 @@
         disciplines @(re-frame/subscribe [::subs/disciplines])]
     [grid {:columns 1 :style {:border "1px solid black" :padding "1%"}}
      [:h3 "Create a new Match"]
-     [:br]
-     [form-control {:fullWidth true}
+     [form-control {:fullWidth true :sx {:mt 2}}
       [date-time-picker {:label          "Date and Time of the Match"
                          :format         "dd/MM/yyyy - HH:mm"
                          :ampm           false
@@ -45,8 +44,7 @@
                          :view-renderers {:hours   renderTimeViewClock
                                           :minutes renderTimeViewClock}
                          }]
-      [:br]
-      [form-control                                         ;;if select is not wrapped in its own form-control the label goes crazy
+      [form-control {:sx {:mt 2}}                                       ;;if select is not wrapped in its own form-control the label goes crazy
        [input-label {:id "winner-label"
                      :sx {:bgcolor "background.default"}}
         "Who won?"
@@ -59,8 +57,7 @@
         [menu-item {:value 1 :key 1} "Team 1"]
         [menu-item {:value 2 :key 2} "Team 2"]
         ]]
-      [:br]
-      [grid {:columns 2 :display "flex"}
+      [grid {:columns 2 :display "flex" :sx {:mt 2}}
        [autocomplete {:fullWidth       true
                       :sx              {:pr 1}
                       :options         (or tags [])
@@ -84,8 +81,7 @@
                                           (r/create-element mui/TextField %))}
         ]
        ]
-      [:br]
-      [grid {:columns 2 :display "flex"}
+      [grid {:columns 2 :display "flex" :sx {:mt 2}}
        [form-control {:fullWidth true
                       :sx        {:pr 1}}                   ;;if select is not wrapped in its own form-control the label goes crazy
         [input-label {:id "team1-label"
@@ -101,7 +97,6 @@
            [menu-item {:value (:id player) :key (:id player)} (:name player)])
          ]
         ]
-       [:br]
        [form-control {:fullWidth true
                       :sx        {:pl 1}}                   ;;if select is not wrapped in its own form-control the label goes crazy
         [input-label {:id "team2-label"
@@ -118,20 +113,19 @@
          ]
         ]
        ]
-      [:br]
       ;;disable button on invalid input
       [button {:variant  "contained"
                :disabled (not (match-form-valid @match-form))
-               :on-click #(re-frame/dispatch [::events/create-match @match-form])}
+               :on-click #(re-frame/dispatch [::events/create-match @match-form])
+               :sx {:mt 2}}
        "Create match"]
       ]
      [:hr]
      [:h3 "Create a new Player"]
-     [:br]
      (let [name (:name @new-player)
            existing (map :name players)
            invalid ((comp not nil? some) (set existing) [name])]
-       [grid {:columns 2 :display "flex"}
+       [grid {:columns 2 :display "flex" :sx {:mt 2}}
         [form-control {:fullWidth true
                        :sx        {:mr 1}}
          [text-field {:placeholder "Player name"
