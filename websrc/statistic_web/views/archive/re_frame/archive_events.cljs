@@ -11,9 +11,4 @@
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-failure      [::global-events/path-change {:name :failure}]
-                  :on-success      [::matches-fetched]}}))
-
-(re-frame/reg-event-fx
-  ::matches-fetched
-  (fn [_cofx [_event-key body]]
-    {:dispatch [::global-events/param-change :archive {:matches body}]}))
+                  :on-success      [::global-events/param-change [:matches] :archive]}}))

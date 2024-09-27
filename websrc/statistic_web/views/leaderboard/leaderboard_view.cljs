@@ -10,9 +10,9 @@
             [reagent-mui.material.table-cell :refer [table-cell]]
             [reagent-mui.material.table-head :refer [table-head]]
             [reagent-mui.material.table-row :refer [table-row]]
-            [reagent-mui.material.typography :refer [typography]]
             [reagent.core :as r]
             [statistic-web.re-frame.global-events :as global-events]
+            [statistic-web.re-frame.events.tags :as tag-events]
             [statistic-web.views.leaderboard.re-frame.leaderboard-events :as events]
             [statistic-web.views.leaderboard.re-frame.leaderboard-subs :as subs]))
 
@@ -31,8 +31,10 @@
   (let [do-reset (-> discipline nil?)]
     (do (reset! modifiers (merge (initial-modifiers) (when (not do-reset) {:discipline discipline})))
         (re-frame/dispatch [::global-events/dispatch-multi-ordered
-                            [:dispatch [::events/clear-tags]]
-                            [:dispatch [::global-events/fetch-tags ::events/tags-fetched (when (not do-reset) {:discipline discipline})]]]))))
+                            [:dispatch [::global-events/param-clear :leaderboard :tags]]
+                            [:dispatch [::tag-events/fetch-tags
+                                        [::global-events/param-change [:tags] :leaderboard]
+                                        (when (not do-reset) {:discipline discipline})]]]))))
 
 (defn change-tag [tag]
   (if (nil? tag)

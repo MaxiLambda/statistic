@@ -1,8 +1,7 @@
 (ns statistic-web.re-frame.global-events
   (:require
-    [ajax.core :as ajax]
-    [day8.re-frame.http-fx]
-    [re-frame.core :as re-frame]                            ;;necessary of effects in reg-event-fx
+    [day8.re-frame.http-fx]                                 ;;necessary for effects in reg-event-fx
+    [re-frame.core :as re-frame]
     [statistic-web.re-frame.initial-state :as db]))
 
 ;;used to automatically dispatch an event to load all data for a specific view
@@ -38,14 +37,15 @@
   ::path-change
   path-change)
 
-;;handles view param change
+;;handles the change of parameters
+;;body is the new value, param-path describes the path or key of the parameter
 (re-frame/reg-event-db
   ::param-change
-  (fn [db [_event-key view-name params-map]]
+  (fn [db [_event-key  param-path view-name body]]
     (let [current-view (-> db :view :name)]
       (if (= current-view view-name)
         ;;update the params by updating via merging the new params
-        (update-in db [:view :params] merge params-map)
+        (assoc-in db (concat [:view :params] param-path) body)
         ;;params changed but change was requested from/for different view
         ;;therefore don't change db
         (do
@@ -69,28 +69,3 @@
   ::dispatch-multi-ordered
   (fn [_cofx [_event-key & events]]
     {:fx events}))
-
-
-"{:discipline} can be provided to limit the returned tags to the ones existing withing the given discipline"
-(re-frame/reg-event-fx
-  ::fetch-tags
-  (fn [_cofx [_event-key success-event & {discipline :discipline}]]
-    (let [req {:method          :get
-               :uri             "/data/tags"
-               :format          (ajax/json-request-format)
-               :response-format (ajax/json-response-format {:keywords? true})
-               :on-failure      [::path-change {:name :failure}]
-               :on-success      [success-event]}]
-      {:http-xhrio (if (nil? discipline)
-                     req
-                     (assoc req :params {:discipline discipline}))})))
-
-(re-frame/reg-event-fx
-  ::fetch-disciplines
-  (fn [_cofx [_event-key success-event]]
-    {:http-xhrio {:method          :get
-                  :uri             "/data/disciplines"
-                  :format          (ajax/json-request-format)
-                  :response-format (ajax/json-response-format {:keywords? true})
-                  :on-failure      [::path-change {:name :failure}]
-                  :on-success      [success-event]}}))

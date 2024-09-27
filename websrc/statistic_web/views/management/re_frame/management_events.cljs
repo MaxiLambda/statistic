@@ -2,6 +2,8 @@
   (:require [ajax.core :as ajax]
             [re-frame.core :as re-frame]
             [statistic-web.re-frame.global-events :as global-events]
+            [statistic-web.re-frame.events.disciplines :as discipline-events]
+            [statistic-web.re-frame.events.tags :as tag-events]
             [statistic-web.views.management.management-data :as data]))
 
 (re-frame/reg-event-fx
@@ -14,27 +16,10 @@
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-failure      [::global-events/path-change {:name :failure}]
-                  :on-success      [::players-fetched]}
-     :dispatch-n [[::global-events/fetch-tags ::tags-fetched]
-                  [::global-events/fetch-disciplines ::disciplines-fetched]]}))
+                  :on-success      [::global-events/param-change [:players] :management]}
+     :dispatch-n [[::tag-events/fetch-tags [::global-events/param-change [:tags] :management]]
+                  [::discipline-events/fetch-disciplines [::global-events/param-change [:disciplines] :management]]]}))
 
-(re-frame/reg-event-fx
-  ::players-fetched
-  (fn [_cofx [_event-key body]]
-    ;;dispatch event to add the players under the :players key to the :params map
-    {:dispatch [::global-events/param-change :management {:players body}]}))
-
-(re-frame/reg-event-fx
-  ::disciplines-fetched
-  (fn [_cofx [_event-key body]]
-    ;;dispatch event to add the disciplines under the :disciplines key to the :params map
-    {:dispatch [::global-events/param-change :management {:disciplines body}]}))
-
-(re-frame/reg-event-fx
-  ::tags-fetched
-  (fn [_cofx [_event-key body]]
-    ;;dispatch event to add the tags under the :tags key to the :params map
-    {:dispatch [::global-events/param-change :management {:tags body}]}))
 
 (re-frame/reg-event-fx
   ::create-player
@@ -45,8 +30,7 @@
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-failure      [::global-events/path-change {:name :failure}]
-                  :on-success      [:management-load]       ;;re-fetch data
-                  }}))
+                  :on-success      [:management-load]}}))
 
 (re-frame/reg-event-fx
   ::create-match
@@ -57,5 +41,4 @@
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-failure      [::global-events/path-change {:name :failure}]
-                  :on-success      [:management-load]       ;;re-fetch data
-                  }}))
+                  :on-success      [:management-load]}}))

@@ -1,0 +1,14 @@
+(ns statistic-web.re-frame.events.disciplines
+  (:require [ajax.core :as ajax]
+            [statistic-web.re-frame.global-events :as global-events]
+            [re-frame.core :as re-frame]))
+
+(re-frame/reg-event-fx
+  ::fetch-disciplines
+  (fn [_cofx [_event-key success-event]]
+    {:http-xhrio {:method          :get
+                  :uri             "/data/disciplines"
+                  :format          (ajax/json-request-format)
+                  :response-format (ajax/json-response-format {:keywords? true})
+                  :on-failure      [::global-events/path-change {:name :failure}]
+                  :on-success      success-event}}))
