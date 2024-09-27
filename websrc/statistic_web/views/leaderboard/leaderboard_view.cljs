@@ -32,7 +32,7 @@
     (do (reset! modifiers (merge (initial-modifiers) (when (not do-reset) {:discipline discipline})))
         (re-frame/dispatch [::global-events/dispatch-multi-ordered
                             [:dispatch [::events/clear-tags]]
-                            [:dispatch [::events/fetch-tags (when (not do-reset) {:discipline discipline})]]]))))
+                            [:dispatch [::global-events/fetch-tags ::events/tags-fetched (when (not do-reset) {:discipline discipline})]]]))))
 
 (defn change-tag [tag]
   (if (nil? tag)

@@ -6,9 +6,8 @@
 (re-frame/reg-event-fx
   :leaderboard-load
   (fn [_cofx _event]
-    ;;TODO UI of leaderboard
-    {:http-xhrio (global-events/fetch-disciplines ::disciplines-fetched)
-     :dispatch   [::fetch-wins]}))
+    {:dispatch-n [[::fetch-wins]
+                  [::global-events/fetch-disciplines ::disciplines-fetched]]}))
 
 (re-frame/reg-event-fx
   ::fetch-wins
@@ -21,13 +20,6 @@
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-failure      [::global-events/path-change {:name :failure}]
                   :on-success      [::wins-fetched :leaderboard]}}))
-
-;;this is a separate event so
-(re-frame/reg-event-fx
-  ::fetch-tags
-  (fn [_cofx [_event-key modifier]]
-    {:http-xhrio (global-events/fetch-tags ::tags-fetched
-                                           (select-keys modifier [:discipline]))}))
 
 (re-frame/reg-event-fx
   ::clear-tags

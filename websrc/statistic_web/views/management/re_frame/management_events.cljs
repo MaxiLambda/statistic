@@ -9,14 +9,14 @@
   (fn [_cofx _event]
     (reset! data/match-form (data/initial-match-form))
     (reset! data/new-player (data/initial-new-player))
-    {:http-xhrio [{:method          :get
-                   :uri             "/players"
-                   :format          (ajax/json-request-format)
-                   :response-format (ajax/json-response-format {:keywords? true})
-                   :on-failure      [::global-events/path-change {:name :failure}]
-                   :on-success      [::players-fetched]}
-                  (global-events/fetch-tags ::tags-fetched)
-                  (global-events/fetch-disciplines ::disciplines-fetched)]}))
+    {:http-xhrio {:method          :get
+                  :uri             "/players"
+                  :format          (ajax/json-request-format)
+                  :response-format (ajax/json-response-format {:keywords? true})
+                  :on-failure      [::global-events/path-change {:name :failure}]
+                  :on-success      [::players-fetched]}
+     :dispatch-n [[::global-events/fetch-tags ::tags-fetched]
+                  [::global-events/fetch-disciplines ::disciplines-fetched]]}))
 
 (re-frame/reg-event-fx
   ::players-fetched
