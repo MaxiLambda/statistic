@@ -10,6 +10,7 @@
             [reagent-mui.material.table-cell :refer [table-cell]]
             [reagent-mui.material.table-head :refer [table-head]]
             [reagent-mui.material.table-row :refer [table-row]]
+            [reagent-mui.material.typography :refer [typography]]
             [reagent.core :as r]
             [statistic-web.re-frame.global-events :as global-events]
             [statistic-web.views.leaderboard.re-frame.leaderboard-events :as events]
@@ -83,19 +84,19 @@
                                 ]
                                ]
                               ]
-
                              [table
                               [table-head
                                [table-row
-                                [table-cell "Player"]
-                                [table-cell "Wins"]
+                                [table-cell {:sx {:font-weight "Bold"}} "Player"]
+                                [table-cell {:align "center"
+                                             :sx {:font-weight "Bold"}} "Wins"]
                                 ]
                                ]
                               [table-body
                                (for [player sorted-players] ;;for instead of map because hiccup has special handling for vectors
                                  [table-row {:key (:id player)}
                                   [table-cell (:name player)]
-                                  [table-cell (:count player)]
+                                  [table-cell {:align "center"} (:count player)]
                                   ])
                                ]
                               ]
