@@ -7,5 +7,7 @@
   "create a match"
   (execute-one! ["INSERT INTO player_matches VALUES (?,?,?)" matchId playerId team]))
 
-(defn get-all []
-  (execute! ["SELECT * from player_matches"]))
+(defn get-all [{space :space}]
+  (execute! ["SELECT player_matches.* FROM player_matches, matches
+              WHERE player_matches.match_id = matches.id
+              AND matches.space_id = ?" space]))

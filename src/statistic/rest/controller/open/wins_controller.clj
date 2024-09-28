@@ -7,7 +7,8 @@
 (defn wins-handler [{params :params}]
   {:status  200
    :headers {"Content-Type" "text/json"}
-   :body    (json/write-str (match-aggregate/get-number-wins (select-keys params [:tag :discipline])))})
+   ;;TODO get real space
+   :body    (json/write-str (match-aggregate/get-number-wins (merge {:space 1} (select-keys params [:tag :discipline]))))})
 
 (defroutes routes
            (GET "/wins" [] wins-handler))

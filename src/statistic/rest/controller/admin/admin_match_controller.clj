@@ -11,7 +11,9 @@
                    :discipline -> char(20)
                    :tag -> char(20)
                    :team1 -> id
-                   :team2 -> id"
+                   :team2 -> id
+                   :space -> id}"
+
   [req]
   (let [{:keys [date winner discipline tag team1 team2]} (:body req)
         team1-mapped (map (fn [id] {:team 1 :id id}) team1)
@@ -21,7 +23,9 @@
                :winner     winner
                :discipline discipline
                :tag        tag
-               :players    players}]
+               :players    players
+               ;;TODO get real space
+               :space      1}]
     (try
       (let [new-match-id (match-aggregate/create-new-match param)]
         {:status  200

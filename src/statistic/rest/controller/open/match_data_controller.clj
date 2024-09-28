@@ -10,19 +10,22 @@
     {:status  200
      :headers {"Content-Type" "text/json"}
      :body    (json/write-str (if (nil? discipline)
-                                (matches/get-used-tags)
-                                (matches/get-used-tags {:discipline discipline})))}))
+                                ;;TODO get real space
+                                (matches/get-used-tags {:space 1})
+                                ;;TODO get real space
+                                (matches/get-used-tags {:discipline discipline :space 1})))}))
 
 (defn disciplines-handler [_req]
   {:status  200
    :headers {"Content-Type" "text/json"}
-   :body    (json/write-str (matches/get-used-disciplines))})
+   ;;TODO get real space
+   :body    (json/write-str (matches/get-used-disciplines {:space 1}))})
 
 (defn matches-handler [_req]
   {:status  200
    :headers {"Content-Type" "text/json"}
-   ;;add support for LocalDateTime values to json/write-str
-   :body    (json/write-str (match-aggregate/get-all-matches-with-teams) :value-fn (date-value-wrapper))})
+   ;;TODO get real space
+   :body    (json/write-str (match-aggregate/get-all-matches-with-teams {:space 1}) :value-fn (date-value-wrapper))})
 
 (defroutes routes
            (GET "/data/tags" [] tags-handler)

@@ -15,7 +15,9 @@
       (try
         {:status  200
          :headers {"Content-Type" "text/json"}
-         :body    (json/write-str (players/create-player {:name player-name}))}
+         :body    (json/write-str (players/create-player {:name player-name
+                                                          ;;TODO get real space
+                                                          :space 1}))}
         (catch PSQLException e
           (-> e .getMessage println)
           (.printStackTrace e)

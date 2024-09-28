@@ -6,7 +6,8 @@
 (defn players-handler [_req]
   {:status  200
    :headers {"Content-Type" "text/json"}
-   :body    (json/write-str (players/get-all))})
+   ;;TODO get real space
+   :body    (json/write-str (players/get-all {:space 1}))})
 
 (defroutes routes
            (GET "/players" [] players-handler))

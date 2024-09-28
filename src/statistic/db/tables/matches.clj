@@ -4,23 +4,26 @@
 (defn create-match [{datetime   :date
                      winner     :winner
                      discipline :discipline
-                     tag        :tag}]
+                     tag        :tag
+                     space      :space}]
 
   "create a match, returns {:id} with the id of the created match"
 
-  (first (execute-one! ["INSERT INTO matches(datetime,winner,discipline,tag)
-    VALUES(?,?,?,?) RETURNING id" datetime winner discipline tag])))
+  (first (execute-one! ["INSERT INTO matches(space_id,datetime,winner,discipline,tag)
+    VALUES(?,?,?,?,?) RETURNING id" space datetime winner discipline tag])))
 
-(defn get-all []
-  (execute! ["SELECT * FROM matches"]))
+(defn get-all [{space :space}]
+  (execute! ["SELECT * FROM matches WHERE space_id = ?" space]))
 
 (defn get-used-tags
-  "Fetches all available tags, can be optionally reduced to only tags for {:discipline}"
-  ([] (map :tag (execute! ["SELECT DISTINCT tag FROM matches"])))
-  ([{discipline :discipline}] (map :tag (execute! ["SELECT DISTINCT tag FROM matches WHERE discipline LIKE ?" discipline]))))
+  "Fetches all available tags in a space, can be optionally reduced to only tags for {:discipline}"
+  [{space :space discipline :discipline}]
+  (if (nil? discipline)
+    (map :tag (execute! ["SELECT DISTINCT tag FROM matches WHERE space_id = ?" space]))
+    (map :tag (execute! ["SELECT DISTINCT tag FROM matches WHERE discipline LIKE ? AND space_id = ?" discipline space]))))
 
-(defn get-used-disciplines []
-  (map :discipline (execute! ["SELECT DISTINCT discipline FROM matches"])))
+(defn get-used-disciplines [{space :space}]
+  (map :discipline (execute! ["SELECT DISTINCT discipline FROM matches WHERE space_id = ?" space])))
 
 (defn get-by-id [id]
-  (first (execute-one! [(str "SELECT * FROM matches WHERE matches.id = " id)])))
+  (first (execute-one! ["SELECT * FROM matches WHERE matches.id = ?"id])))
