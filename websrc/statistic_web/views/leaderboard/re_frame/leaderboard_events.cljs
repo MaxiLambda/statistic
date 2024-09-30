@@ -13,10 +13,13 @@
 (re-frame/reg-event-fx
   ::fetch-wins
   ;;modifiers are an optional map of {:discipline :tag}, :tag is only handled if :discipline is given
-  (fn [_cofx [_event-key & {:as modifiers}]]
+  (fn [{:keys [db]} [_event-key & {:as modifiers}]]
+    (println (get-in db [:space :id]))
+    (println (type (get-in db [:space :id])))
+    (println (merge {:space (get-in db [:space :id])} (select-keys modifiers [:tag :discipline])))
     {:http-xhrio {:method          :get
                   :uri             "/wins"
-                  :params          (select-keys modifiers [:tag :discipline])
+                  :params          (merge {:space (get-in db [:space :id])} (select-keys modifiers [:tag :discipline]))
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-failure      [::global-events/path-change :error]

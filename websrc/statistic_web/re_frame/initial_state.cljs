@@ -3,4 +3,6 @@
 ;;The initial global state
 (def default-db
   {:view {:name   :leaderboard
-          :params {}}})
+          :params {}}
+   ;;TODO add :name to show it in header
+   :space {:id  1}})

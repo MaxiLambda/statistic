@@ -3,11 +3,12 @@
             [compojure.core :refer [GET defroutes]]
             [statistic.db.tables.players :as players]))
 
-(defn players-handler [_req]
+(defn players-handler [{params :params}]
   {:status  200
    :headers {"Content-Type" "text/json"}
-   ;;TODO get real space
-   :body    (json/write-str (players/get-all {:space 1}))})
+   :body    (json/write-str (players/get-all (update-in (get-in params [:space])
+                                                        [:space]
+                                                        ^[String] Integer/parseInt)))})
 
 (defroutes routes
            (GET "/players" [] players-handler))

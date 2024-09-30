@@ -8,11 +8,12 @@
 
 (re-frame/reg-event-fx
   :management-load
-  (fn [_cofx _event]
+  (fn [{:keys [db]} _event]
     (reset! data/match-form (data/initial-match-form))
     (reset! data/new-player (data/initial-new-player))
     {:http-xhrio {:method          :get
                   :uri             "/players"
+                  :params          {:space (get-in db [:space :id])}
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-failure      [::global-events/path-change :error]
@@ -23,10 +24,10 @@
 
 (re-frame/reg-event-fx
   ::create-player
-  (fn [_cofx [_event-key params]]
+  (fn [{:keys [db]} [_event-key params]]
     {:http-xhrio {:method          :post
                   :uri             "/admin/players/create"
-                  :params          params
+                  :params          (merge {:space (get-in db [:space :id])} params)
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-failure      [::global-events/path-change :error]
@@ -34,10 +35,10 @@
 
 (re-frame/reg-event-fx
   ::create-match
-  (fn [_cofx [_event-key params]]
+  (fn [{:keys [db]} [_event-key params]]
     {:http-xhrio {:method          :post
                   :uri             "/admin/matches/create"
-                  :params          params
+                  :params          (merge {:space (get-in db [:space :id])} params)
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-failure      [::global-events/path-change :error]

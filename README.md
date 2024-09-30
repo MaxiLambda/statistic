@@ -6,6 +6,11 @@ A Clojure library designed to ... well, that part is up to you.
 
 FIXME
 
+## Hints
+
+* All GET Request Parameters are of type String
+* POST Request body parameters are typed correctly
+
 ## License
 
 Copyright © 2024 FIXME

@@ -5,9 +5,10 @@
 
 (re-frame/reg-event-fx
   ::fetch-disciplines
-  (fn [_cofx [_event-key success-event]]
+  (fn [{:keys [db]} [_event-key success-event]]
     {:http-xhrio {:method          :get
                   :uri             "/data/disciplines"
+                  :params         {:space (get-in db [:space :id])}
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
                   :on-failure      [::global-events/path-change :error]

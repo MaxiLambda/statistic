@@ -7,7 +7,8 @@
 (defn create-player-handler
   "requires :body {:name <name>}"
   [req]
-  (let [player-name (get-in req [:body :name])]
+  (let [player-name (get-in req [:body :name])
+        space (get-in req [:body :space])]
     (if (nil? player-name)
       (do
         (println "Parameter :name is missing from body: " (:body req))
@@ -16,8 +17,7 @@
         {:status  200
          :headers {"Content-Type" "text/json"}
          :body    (json/write-str (players/create-player {:name player-name
-                                                          ;;TODO get real space
-                                                          :space 1}))}
+                                                          :space space}))}
         (catch PSQLException e
           (-> e .getMessage println)
           (.printStackTrace e)
