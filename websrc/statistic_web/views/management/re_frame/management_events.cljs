@@ -12,7 +12,7 @@
     (reset! data/match-form (data/initial-match-form))
     (reset! data/new-player (data/initial-new-player))
     {:http-xhrio {:method          :get
-                  :uri             "/players"
+                  :uri             "/view/players"
                   :params          {:space (get-in db [:space :id])}
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
@@ -26,7 +26,7 @@
   ::create-player
   (fn [{:keys [db]} [_event-key params]]
     {:http-xhrio {:method          :post
-                  :uri             "/admin/players/create"
+                  :uri             "/edit/players/create"
                   :params          (merge {:space (get-in db [:space :id])} params)
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})
@@ -37,7 +37,7 @@
   ::create-match
   (fn [{:keys [db]} [_event-key params]]
     {:http-xhrio {:method          :post
-                  :uri             "/admin/matches/create"
+                  :uri             "/edit/matches/create"
                   :params          (merge {:space (get-in db [:space :id])} params)
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})

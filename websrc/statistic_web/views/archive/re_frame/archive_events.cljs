@@ -7,7 +7,7 @@
   :archive-load
   (fn [{:keys [db]} _event]
     {:http-xhrio {:method          :get
-                  :uri             "/data/matches"
+                  :uri             "/view/data/matches"
                   :params          {:space (get-in db [:space :id])}
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})

@@ -11,7 +11,7 @@
   ::fetch-tags
   (fn [{:keys [db]} [_event-key success-event & {discipline :discipline}]]
     (let [req {:method          :get
-               :uri             "/data/tags"
+               :uri             "/view/data/tags"
                :params          {:space (get-in db [:space :id])}
                :format          (ajax/json-request-format)
                :response-format (ajax/json-response-format {:keywords? true})

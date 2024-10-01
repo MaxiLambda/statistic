@@ -14,11 +14,8 @@
   ::fetch-wins
   ;;modifiers are an optional map of {:discipline :tag}, :tag is only handled if :discipline is given
   (fn [{:keys [db]} [_event-key & {:as modifiers}]]
-    (println (get-in db [:space :id]))
-    (println (type (get-in db [:space :id])))
-    (println (merge {:space (get-in db [:space :id])} (select-keys modifiers [:tag :discipline])))
     {:http-xhrio {:method          :get
-                  :uri             "/wins"
+                  :uri             "/view/wins"
                   :params          (merge {:space (get-in db [:space :id])} (select-keys modifiers [:tag :discipline]))
                   :format          (ajax/json-request-format)
                   :response-format (ajax/json-response-format {:keywords? true})

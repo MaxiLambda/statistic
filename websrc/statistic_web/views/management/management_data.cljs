@@ -35,10 +35,7 @@
   [form]
   ;;only these parameters a checked, because all other fields are always in a valid state
   ;;applies ONLY if they are not changed by external sources
-  (let [tag (:tag form)
-        discipline (:discipline form)
-        team1 (:team1 form)
-        team2 (:team2 form)]
+  (let [{:keys [team2 tag discipline team1]} form]
     (and
       (< 0 (count tag))
       (< 0 (count discipline))

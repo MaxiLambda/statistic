@@ -7,7 +7,7 @@
             [ring.middleware.params :as params]
             [ring.middleware.resource :as resource]
             [ring.util.response :as response]
-            [statistic.authentication.admin-authentication :refer [authenticated?]]
+            [statistic.authentication.admin-authentication :refer [admin-authenticated? edit-authenticated? view-authenticated?]]
             [statistic.authentication.basic-auth :refer [wrap-add-basic-prefix]]
             [statistic.rest.controller.admin.admin-match-controller :as admin-match-controller]
             [statistic.rest.controller.admin.admin-player-controller :as admin-player-controller]
@@ -19,13 +19,17 @@
 (defn home-handler [_req]
   (response/file-response "public/index.html" {:root "resources"}))
 
-(defroutes public-routes
+;;routes used to view data from spaces
+(defroutes view-routes
            player-controller/routes
            wins-controller/routes
-           match-data-controller/routes
+           match-data-controller/routes)
+
+(defroutes public-routes
            (GET "/" [] home-handler))
 
-(defroutes protected-routes
+;;routes used to edit space data
+(defroutes edit-routes
            admin-player-controller/routes
            admin-match-controller/routes)
 
@@ -35,7 +39,8 @@
            ;;this reserves the prefixes public/index.html and public/js/compiled
            ;;adds everything in the resources/public dir to the path with the prefix public
            (resource/wrap-resource public-routes "public")
-           (context "/admin" [] (wrap-basic-authentication protected-routes authenticated?))
+           (context "/view" [] (wrap-basic-authentication view-routes view-authenticated?))
+           (context "/edit" [] (wrap-basic-authentication edit-routes edit-authenticated?))
            (route/not-found "Error 404 - route not found"))
 
 (def app-routes
