@@ -5,6 +5,6 @@
   {:user     (or (System/getenv "ADMIN_NAME") "admin")
    :password (or (System/getenv "ADMIN_PASSWORD") "admin")})
 
-(defn authenticated? [user password]
+(defn authenticated? [user password _req]
   (and (= (:user (admin-credentials)) user)
        (= (:password (admin-credentials)) password)))

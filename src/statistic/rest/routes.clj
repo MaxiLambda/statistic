@@ -2,7 +2,6 @@
   (:gen-class)
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
-            [ring.middleware.basic-authentication :refer [wrap-basic-authentication]]
             [ring.middleware.json :refer [wrap-json-body]]
             [ring.middleware.keyword-params :as keyword-params]
             [ring.middleware.params :as params]
@@ -14,7 +13,8 @@
             [statistic.rest.controller.admin.admin-player-controller :as admin-player-controller]
             [statistic.rest.controller.open.match-data-controller :as match-data-controller]
             [statistic.rest.controller.open.player-controller :as player-controller]
-            [statistic.rest.controller.open.wins-controller :as wins-controller]))
+            [statistic.rest.controller.open.wins-controller :as wins-controller]
+            [statistic.authentication.wrap-ring-basic-auth :refer [wrap-basic-authentication]]))
 
 (defn home-handler [_req]
   (response/file-response "public/index.html" {:root "resources"}))

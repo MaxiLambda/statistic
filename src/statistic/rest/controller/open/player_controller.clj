@@ -3,10 +3,10 @@
             [compojure.core :refer [GET defroutes]]
             [statistic.db.tables.players :as players]))
 
-(defn players-handler [{params :params}]
+(defn players-handler [{params :params :as req}]
   {:status  200
    :headers {"Content-Type" "text/json"}
-   :body    (json/write-str (players/get-all (update-in (get-in params [:space])
+   :body    (json/write-str (players/get-all (update-in (select-keys params [:space])
                                                         [:space]
                                                         ^[String] Integer/parseInt)))})
 
