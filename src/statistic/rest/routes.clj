@@ -2,19 +2,20 @@
   (:gen-class)
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
+            [ring.middleware.cookies :as cookies]
             [ring.middleware.json :refer [wrap-json-body]]
             [ring.middleware.keyword-params :as keyword-params]
             [ring.middleware.params :as params]
             [ring.middleware.resource :as resource]
             [ring.util.response :as response]
-            [statistic.authentication.admin-authentication :refer [admin-authenticated? edit-authenticated? view-authenticated?]]
-            [statistic.authentication.basic-auth :refer [wrap-add-basic-prefix]]
+            [statistic.authentication.authentication-check :refer [edit-authenticated? view-authenticated?]]
+            [statistic.authentication.wrap-auth :refer [wrap-auth]]
             [statistic.rest.controller.admin.admin-match-controller :as admin-match-controller]
             [statistic.rest.controller.admin.admin-player-controller :as admin-player-controller]
+            [statistic.rest.controller.login-controller :as login-controller]
             [statistic.rest.controller.open.match-data-controller :as match-data-controller]
             [statistic.rest.controller.open.player-controller :as player-controller]
-            [statistic.rest.controller.open.wins-controller :as wins-controller]
-            [statistic.authentication.wrap-ring-basic-auth :refer [wrap-basic-authentication]]))
+            [statistic.rest.controller.open.wins-controller :as wins-controller]))
 
 (defn home-handler [_req]
   (response/file-response "public/index.html" {:root "resources"}))
@@ -38,14 +39,15 @@
            ;;add all files from "./resources" to serve them
            ;;this reserves the prefixes public/index.html and public/js/compiled
            ;;adds everything in the resources/public dir to the path with the prefix public
+           login-controller/routes
            (resource/wrap-resource public-routes "public")
-           (context "/view" [] (wrap-basic-authentication view-routes view-authenticated?))
-           (context "/edit" [] (wrap-basic-authentication edit-routes edit-authenticated?))
+           (context "/view" [] (wrap-auth view-routes view-authenticated?))
+           (context "/edit" [] (wrap-auth edit-routes edit-authenticated?))
            (route/not-found "Error 404 - route not found"))
 
 (def app-routes
   (-> all-routes
-      wrap-add-basic-prefix
+      cookies/wrap-cookies
       ;;parses request :body into keyword map
       (wrap-json-body {:keywords? true})
       ;;parses request :params (headers and url) into keyword map
