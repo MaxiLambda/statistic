@@ -1,4 +1,4 @@
-(ns statistic.rest.controller.open.match-data-controller
+(ns statistic.rest.controller.view.match-data-controller
   (:require [clojure.data.json :as json]
             [compojure.core :refer [GET defroutes]]
             [statistic.db.aggregate.match-aggregate :as match-aggregate]

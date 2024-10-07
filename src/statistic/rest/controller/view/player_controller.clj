@@ -1,4 +1,4 @@
-(ns statistic.rest.controller.open.player-controller
+(ns statistic.rest.controller.view.player-controller
   (:require [clojure.data.json :as json]
             [compojure.core :refer [GET defroutes]]
             [statistic.db.tables.players :as players]))

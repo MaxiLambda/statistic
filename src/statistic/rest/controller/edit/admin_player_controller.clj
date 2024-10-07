@@ -1,4 +1,4 @@
-(ns statistic.rest.controller.admin.admin-player-controller
+(ns statistic.rest.controller.edit.admin-player-controller
   (:require [clojure.data.json :as json]
             [compojure.core :refer [POST defroutes]]
             [statistic.db.tables.players :as players])
@@ -16,7 +16,7 @@
       (try
         {:status  200
          :headers {"Content-Type" "text/json"}
-         :body    (json/write-str (players/create-player {:name player-name
+         :body    (json/write-str (players/create-player {:name  player-name
                                                           :space space}))}
         (catch PSQLException e
           (-> e .getMessage println)

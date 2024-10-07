@@ -10,14 +10,14 @@
             [ring.util.response :as response]
             [statistic.authentication.authentication-check :refer [edit-authenticated? view-authenticated?]]
             [statistic.authentication.wrap-auth :refer [wrap-auth]]
-            [statistic.rest.controller.admin.admin-match-controller :as admin-match-controller]
-            [statistic.rest.controller.admin.admin-player-controller :as admin-player-controller]
+            [statistic.rest.controller.edit.admin-match-controller :as admin-match-controller]
+            [statistic.rest.controller.edit.admin-player-controller :as admin-player-controller]
+            [statistic.rest.controller.edit.admin-space-controller :as admin-space-controller]
             [statistic.rest.controller.login-controller :as login-controller]
-            [statistic.rest.controller.open.match-data-controller :as match-data-controller]
-            [statistic.rest.controller.open.player-controller :as player-controller]
-            [statistic.rest.controller.open.space-controller :as space-controller]
-            [statistic.rest.controller.admin.admin-space-controller :as admin-space-controller]
-            [statistic.rest.controller.open.wins-controller :as wins-controller]))
+            [statistic.rest.controller.view.match-data-controller :as match-data-controller]
+            [statistic.rest.controller.view.player-controller :as player-controller]
+            [statistic.rest.controller.view.space-controller :as space-controller]
+            [statistic.rest.controller.view.wins-controller :as wins-controller]))
 
 (defn home-handler [_req]
   (response/file-response "public/index.html" {:root "resources"}))
@@ -35,7 +35,7 @@
 ;;routes used to edit space data
 (defroutes edit-routes
            admin-player-controller/routes
-           admin-match-controller/routes
+           admin-space-controller/routes
            admin-match-controller/routes)
 
 (defroutes all-routes
