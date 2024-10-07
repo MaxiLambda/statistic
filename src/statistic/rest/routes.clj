@@ -15,6 +15,8 @@
             [statistic.rest.controller.login-controller :as login-controller]
             [statistic.rest.controller.open.match-data-controller :as match-data-controller]
             [statistic.rest.controller.open.player-controller :as player-controller]
+            [statistic.rest.controller.open.space-controller :as space-controller]
+            [statistic.rest.controller.admin.admin-space-controller :as admin-space-controller]
             [statistic.rest.controller.open.wins-controller :as wins-controller]))
 
 (defn home-handler [_req]
@@ -24,6 +26,7 @@
 (defroutes view-routes
            player-controller/routes
            wins-controller/routes
+           space-controller/routes
            match-data-controller/routes)
 
 (defroutes public-routes
@@ -32,6 +35,7 @@
 ;;routes used to edit space data
 (defroutes edit-routes
            admin-player-controller/routes
+           admin-match-controller/routes
            admin-match-controller/routes)
 
 (defroutes all-routes
