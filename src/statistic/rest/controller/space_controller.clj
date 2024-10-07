@@ -1,4 +1,4 @@
-(ns statistic.rest.controller.view.space-controller
+(ns statistic.rest.controller.space-controller
   (:require [clojure.data.json :as json]
             [compojure.core :refer [GET defroutes]]
             [statistic.db.tables.spaces :as spaces]))

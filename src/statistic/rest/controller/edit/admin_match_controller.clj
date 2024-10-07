@@ -14,26 +14,31 @@
                    :team2 -> id
                    :space -> id}"
 
-  [{body :body}]
-  (let [{:keys [date winner discipline tag team1 team2 space]} body
-        team1-mapped (map (fn [id] {:team 1 :id id}) team1)
-        team2-mapped (map (fn [id] {:team 2 :id id}) team2)
-        players (concat team1-mapped team2-mapped)
-        param {:date       (OffsetDateTime/parse date)
-               :winner     winner
-               :discipline discipline
-               :tag        tag
-               :players    players
-               :space      space}]
-    (try
-      (let [new-match-id (match-aggregate/create-new-match param)]
-        {:status  200
-         :headers {"Content-Type" "text/json"}
-         :body    (json/write-str {:new-match new-match-id})})
-      (catch PSQLException e
-        (-> e .getMessage println)
-        (.printStackTrace e)
-        {:status 500}))))
+  [{body :body auth :auth}]
+  ;;check if the user authentication is for the requested space
+  (if (= (-> auth Integer/parseInt (get 2)) (:space body))
+    (let [{:keys [date winner discipline tag team1 team2 space]} body
+          team1-mapped (map (fn [id] {:team 1 :id id}) team1)
+          team2-mapped (map (fn [id] {:team 2 :id id}) team2)
+          players (concat team1-mapped team2-mapped)
+          param {:date       (OffsetDateTime/parse date)
+                 :winner     winner
+                 :discipline discipline
+                 :tag        tag
+                 :players    players
+                 :space      space}]
+      (try
+        (let [new-match-id (match-aggregate/create-new-match param)]
+          {:status  200
+           :headers {"Content-Type" "text/json"}
+           :body    (json/write-str {:new-match new-match-id})})
+        (catch PSQLException e
+          (-> e .getMessage println)
+          (.printStackTrace e)
+          {:status 500})))
+    {:status  401
+     :headers {"Content-Type" "text/html"}
+     :body    "authenticated for different space"}))
 
 (defroutes routes
            (POST "/matches/create" [] create-match-handler))

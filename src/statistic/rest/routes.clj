@@ -16,21 +16,22 @@
             [statistic.rest.controller.login-controller :as login-controller]
             [statistic.rest.controller.view.match-data-controller :as match-data-controller]
             [statistic.rest.controller.view.player-controller :as player-controller]
-            [statistic.rest.controller.view.space-controller :as space-controller]
+            [statistic.rest.controller.space-controller :as space-controller]
             [statistic.rest.controller.view.wins-controller :as wins-controller]))
 
 (defn home-handler [_req]
   (response/file-response "public/index.html" {:root "resources"}))
 
+(defroutes public-routes
+           (GET "/" [] home-handler)
+           login-controller/routes
+           space-controller/routes)
+
 ;;routes used to view data from spaces
 (defroutes view-routes
            player-controller/routes
            wins-controller/routes
-           space-controller/routes
            match-data-controller/routes)
-
-(defroutes public-routes
-           (GET "/" [] home-handler))
 
 ;;routes used to edit space data
 (defroutes edit-routes
@@ -43,7 +44,6 @@
            ;;add all files from "./resources" to serve them
            ;;this reserves the prefixes public/index.html and public/js/compiled
            ;;adds everything in the resources/public dir to the path with the prefix public
-           login-controller/routes
            (resource/wrap-resource public-routes "public")
            (context "/view" [] (wrap-auth view-routes view-authenticated?))
            (context "/edit" [] (wrap-auth edit-routes edit-authenticated?))
