@@ -9,7 +9,7 @@
 
 
 (defn admin-authentication [username pw]
-  (let [password (hash/hash pw)]
+  (let [password (hash/hash-pw pw)]
     (if (check/admin-authenticated? username password)
       (cookies/cookies-response
         (response/set-cookie {:status  200
@@ -19,7 +19,7 @@
       {:status 401})))
 
 (defn user-authentication [username pw space]
-  (let [password (hash/hash pw)
+  (let [password (hash/hash-pw pw)
         edit? (check/edit-authenticated? username password space)
         view? (check/view-authenticated? username password space)
         mode (or (when edit? "edit") (when view? "view"))]

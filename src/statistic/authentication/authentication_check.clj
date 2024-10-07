@@ -5,7 +5,7 @@
 ;;TODO maybe write to config file instead
 (defn admin-credentials []
   {:user     (or (System/getenv "ADMIN_NAME") "admin")
-   :password (hash/hash (or (System/getenv "ADMIN_PASSWORD") "admin"))})
+   :password (hash/hash-pw (or (System/getenv "ADMIN_PASSWORD") "admin"))})
 
 (defn edit-authenticated?
   "check if the provided user authentication for the given space matches edit authentication"
