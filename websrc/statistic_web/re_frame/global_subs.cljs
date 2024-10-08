@@ -9,3 +9,13 @@
   ::view
   (fn [db]
     (-> db :view :name)))
+
+(re-frame/reg-sub
+  ::current-space
+  (fn [db]
+    (-> db :space)))
+
+(re-frame/reg-sub
+  ::current-mode
+  (fn [db]
+    (-> db :mode)))

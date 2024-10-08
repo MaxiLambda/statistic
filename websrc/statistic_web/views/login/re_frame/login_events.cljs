@@ -2,6 +2,7 @@
   (:require [ajax.core :as ajax]
             [re-frame.core :as re-frame]
             [statistic-web.re-frame.global-events :as global-events]
+            [statistic-web.re-frame.events.spaces :as spaces-events]
             [statistic-web.views.login.login-data :as data]
             [statistic-web.views.login.re-frame.login-request-body :refer [transform-body]]))
 
@@ -9,17 +10,7 @@
   :login-load
   (fn [_cofx _event]
     (reset! data/login-data data/initial-data)
-    {:dispatch [::fetch-spaces]}))
-
-(re-frame/reg-event-fx
-  ::fetch-spaces
-  (fn [_cofx _event]
-    {:http-xhrio {:method          :get
-                  :uri             "/spaces"
-                  :format          (ajax/json-request-format)
-                  :response-format (ajax/json-response-format {:keywords? true})
-                  :on-failure      [::global-events/path-change :error]
-                  :on-success      [::global-events/param-change [:spaces] :login]}}))
+    {:dispatch [::spaces-events/fetch-spaces [::global-events/param-change [:spaces] :login]]}))
 
 (re-frame/reg-event-fx
   ::login
@@ -40,12 +31,13 @@
 
 (re-frame/reg-event-fx
   ::authenticated
-  (fn [{:keys [db]} [_event-key name id mode]]
+  (fn [{:keys [db]} [_event-key name id {mode :mode}]]
     (let [data (if (nil? id)
                  {:mode mode}
                  {:mode  mode
                   :space {:id   id
                           :name name}})]
       {:db (merge db data)
-       :dispatch [::global-events/path-change :leaderboard]})))
+       ;;TODO dispatch admins to :space-management and others to :leaderboard
+       :dispatch [::global-events/path-change :login]})))
 

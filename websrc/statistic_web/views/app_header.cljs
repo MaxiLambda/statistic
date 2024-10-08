@@ -15,10 +15,16 @@
             [statistic-web.views.react-hooks.use-is-small-view :refer [size-dependent]]
             ["react" :as react]))
 
-(def available-views [[:leaderboard "Leaderboard"]
-                      [:archive "Archive"]
-                      [:management "Create Match"]
-                      [:login "Login"]])
+
+(def available-views
+  "the available views by:
+    their dispatch key
+    their name
+    set of all modes which are authorized for this view ('edit','view','admin','none')"
+  [[:leaderboard "Leaderboard" #{"edit" "view"}]
+   [:archive "Archive" #{"edit" "view"}]
+   [:management "Create Match" #{"edit"}]
+   [:login "Login" #{"edit" "view" "admin" "none"}]])
 
 ;;definitions for the desktop app-header
 (defn switch-view-button
@@ -28,12 +34,13 @@
     :variant  "contained"
     :color    (if (= current-view view-key) "secondary" "info")
     :on-click #(re-frame/dispatch [::events/path-change view-key])}
-   button-text
-   ])
+   button-text])
 
-(defn big-view-actions [view]
+(defn big-view-actions [view current-mode]
+  (println available-views current-mode)
   [:<>
-   (for [[key text] available-views]
+   (for [[key text modes] available-views
+         :when (-> current-mode modes nil? not)]
      (switch-view-button key text view))])
 
 ;;definitions for the mobile app-header
@@ -47,7 +54,8 @@
     text]
    ])
 
-(defn small-view-actions [view]
+(defn small-view-actions [view current-mode]
+  (println available-views current-mode)
   [:<>
    [button {:variant  "contained"
             :color    "secondary"
@@ -58,7 +66,8 @@
             :open     @drawer-open
             :on-close #(reset! drawer-open false)}
     [list
-     (for [[key text] available-views]
+     (for [[key text modes] available-views
+           :when (-> current-mode modes nil? not)]
        (switch-view-list-button key text view))
      ]
     ]
@@ -66,7 +75,12 @@
 
 ;;the app-header
 (defn header [children]
-  (let [view @(re-frame/subscribe [::subs/view])]
+  (let [view @(re-frame/subscribe [::subs/view])
+        current-mode @(re-frame/subscribe [::subs/current-mode])
+        space-name (some-> @(re-frame/subscribe [::subs/current-space]) :name)
+        text (if (= current-mode "admin")
+               " (Admin)"
+               (str ": " space-name))]
     [:div
      [box
       {:sx {:flex-grow 1}}
@@ -77,12 +91,11 @@
          {:component "div"
           :variant   "h6"
           :sx        {:flex-grow 1}}
-         "Statistics"
+         "Statistics" text
          ]
-
         [size-dependent
-         [big-view-actions view]
-         [small-view-actions view]]
+         [big-view-actions view current-mode]
+         [small-view-actions view current-mode]]
         ]
        ]
       ]
