@@ -3,7 +3,7 @@
             [compojure.core :refer [GET defroutes]]
             [statistic.db.tables.spaces :as spaces]))
 
-(defn spaces-handler []
+(defn spaces-handler [_req]
   {:status  200
    :headers {"Content-Type" "text/json"}
    :body    (json/write-str (spaces/get-all))})

@@ -7,6 +7,7 @@
     [statistic-web.views.app-localization :refer [app-localization]]
     [statistic-web.views.archive.archive-view :refer [archive-view]]
     [statistic-web.views.error.error-view :refer [error-view]]
+    [statistic-web.views.login.login-view :refer [login-view]]
     [statistic-web.views.leaderboard.leaderboard-view :refer [leaderboard-view]]
     [statistic-web.views.management.management-view :refer [management-view]]))
 
@@ -16,7 +17,8 @@
   (view-key {:leaderboard (leaderboard-view)
              :management  (management-view)
              :archive     (archive-view)
-             :error       (error-view)}))
+             :error       (error-view)
+             :login       (login-view)}))
 
 (defn app-panel []
   (-> @(re-frame/subscribe [::subs/view])

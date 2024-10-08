@@ -8,6 +8,7 @@
     [statistic-web.views.archive.re-frame.archive-events]
     [statistic-web.views.error.re-frame.error-events]
     [statistic-web.views.leaderboard.re-frame.leaderboard-events]
+    [statistic-web.views.login.re-frame.login-events]
     [statistic-web.views.management.re-frame.management-events]))
 
 (defn ^:dev/after-load mount-root []

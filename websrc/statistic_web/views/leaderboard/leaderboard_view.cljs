@@ -23,7 +23,6 @@
 (defonce modifiers (r/atom (initial-modifiers)))
 
 (add-watch modifiers :change-listener (fn [_key _ref _old new]
-                                        (println new)       ;;debug output
                                         ;;re-fetch wins
                                         (re-frame/dispatch [::events/fetch-wins (select-keys new [:discipline :tag])])))
 

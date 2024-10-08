@@ -40,7 +40,6 @@
    denote the space in which the authentication should be valid.
    An admin login is missing the :space key."
   [{body :body}]
-  (println body)
   (let [{:keys [username password space]} body]
     (if (nil? space)
       (admin-authentication username password)

@@ -1,8 +1,12 @@
 (ns statistic.db.tables.spaces
   (:require [statistic.db.utils :refer [execute! execute-one!]]))
 
-(defn get-all []
-  (execute! ["SELECT * FROM spaces"]))
+(defn get-all
+  "returns :name and :id of all spaces.
+
+  Passwords are not returned. Use get-by-id if you need passwords."
+  []
+  (execute! ["SELECT id, name FROM spaces"]))
 
 (defn get-by-id [{id :id}]
   (first (execute-one! ["SELECT * FROM spaces WHERE spaces.id = ?" id])))

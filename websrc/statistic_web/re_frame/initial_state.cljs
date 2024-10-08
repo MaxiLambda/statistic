@@ -2,7 +2,10 @@
 
 ;;The initial global state
 (def default-db
-  {:view {:name   :leaderboard
+  {:view {:name   :login
           :params {}}
-   ;;TODO add :name to show it in header
-   :space {:id  1}})
+   ;;indicates the current space -> set by all logins but the admin login
+   :space {:id nil :name nil}
+   ;;the current mode out of "edit" "view" "admin"
+   ;;"admin" indicates admin mode, therefore :space is {:id nil :name nil}
+   :mode nil})

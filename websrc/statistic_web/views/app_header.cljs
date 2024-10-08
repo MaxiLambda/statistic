@@ -17,7 +17,8 @@
 
 (def available-views [[:leaderboard "Leaderboard"]
                       [:archive "Archive"]
-                      [:management "Create Match"]])
+                      [:management "Create Match"]
+                      [:login "Login"]])
 
 ;;definitions for the desktop app-header
 (defn switch-view-button
